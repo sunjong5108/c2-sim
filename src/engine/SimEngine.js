@@ -465,42 +465,6 @@ export default class SimEngine {
         }
         // leader inactive 또는 targets 소진 → 게이트 해제 (팔로워 독립 완료)
       }
-      // ── Column 편대 조기 완료 (orbit 방지) ──
-      // 편대이동 column 은 팔로워가 리더와 동일한 sub-WP 1..N 을 공유하고
-      // rendezvous 로 m*spacing 뒤를 trailing. 리더가 마지막 sub-WP 에서 정지하면
-      // 팔로워의 현재 target 이 "리더가 점유한 지점" 과 일치 → literal 도달 불가.
-      // `_tryMoveWithAvoidance` 의 ±90° tangent deflection 이 safetyD 내에서
-      // 허용되어 팔로워가 리더 주변을 공전 → curTgt 영구 정체, 이후 WP 미실행.
-      //
-      // 해결: predecessor 가 이 formation WP 를 떠난 경우(다음 WP 진입 / targets
-      // 소진 / inactive), 팔로워의 남은 formation sub-WP 를 일괄 소비하고 자신의
-      // 다음 WP 로 즉시 전환. column 편대 의 "formation 종료" 시점은 predecessor
-      // 의 departure 로 정의한다.
-      if(tg.formPredecessorId&&!tg.formBarrier){
-        const pred=this.platforms.find(lp=>lp.platformId===tg.formPredecessorId);
-        let predLeft=false;
-        if(!pred||!pred.active||pred.curTgt>=pred.targets.length){
-          predLeft=true;
-        } else {
-          const predTg=pred.targets[pred.curTgt];
-          if(predTg.wpName!==tg.wpName){
-            // predecessor 가 다른 WP 에 있음 — 이 formation WP 이전(leaderBefore) 인지 확인
-            let predBefore=false;
-            for(let i=pred.curTgt+1;i<pred.targets.length;i++){
-              if(pred.targets[i].wpName===tg.wpName){predBefore=true;break;}
-            }
-            predLeft=!predBefore; // 이후 이 wpName 이 안 나오면 predecessor 는 이미 지나감
-          }
-        }
-        if(predLeft){
-          // 남은 동일 wpName sub-WP 를 모두 소비
-          let nextIdx=p.curTgt;
-          while(nextIdx<p.targets.length&&p.targets[nextIdx].wpName===tg.wpName)nextIdx++;
-          p.curTgt=nextIdx;
-          p.speedMs=0;
-          continue;
-        }
-      }
       // ── 이동: 모든 유닛이 자기 WP 방향으로 이동 ──
       const prevTgt=p.curTgt>0?p.targets[p.curTgt-1]:null;
       p.speedMs=(prevTgt&&prevTgt.wpName===tg.wpName)?prevTgt.speed:tg.speed;

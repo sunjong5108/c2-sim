@@ -282,6 +282,31 @@ export default function App(){
         }
       }
 
+      // Step 1c: 편대이동 column 의 마지막 sub-WP back-shift
+      //   - 팔로워 m 의 마지막 sub-WP 좌표를 마지막 구간 방향의 역방향으로 m*spacing 이동.
+      //   - 이유: rendezvous prepend 만 있으면 팔로워의 sub-WP 1..N-1 이 리더와 동일한
+      //     좌표를 공유 → 리더가 마지막 sub-WP 에서 정차하면 팔로워의 target 이 리더
+      //     점유 지점과 일치 → literal 도달 불가 → `_tryMoveWithAvoidance` 의 tangent
+      //     deflection 으로 팔로워가 리더 주위를 공전하는 버그 발생.
+      //   - back-shift 로 팔로워 target 을 "column 위치(리더 뒤 m*spacing)" 에 놓으면
+      //     literal 도달 가능, orbit 불가, 런타임 특수 분기 불필요.
+      //   - 총 경로 길이는 동일: rendezvous 구간 +m*spacing, 마지막 구간 -m*spacing → 상쇄.
+      if(hasFormation&&totalM>1&&wTy==="편대이동"&&usePts.length>=2){
+        const lastIdx=usePts.length-1;
+        const dirN=brg(usePts[lastIdx-1].lat,usePts[lastIdx-1].lon,usePts[lastIdx].lat,usePts[lastIdx].lon);
+        const backDirN=(dirN+180)%360;
+        for(let m=1;m<totalM;m++){
+          const memberPts=allMemberPts[m];
+          const lastPt=memberPts[memberPts.length-1];
+          const [la,lo]=mvPt(lastPt.lat,lastPt.lon,backDirN,m*wFormSpacing);
+          memberPts[memberPts.length-1]={
+            ...lastPt,
+            lat:Math.round(la*1e6)/1e6,
+            lon:Math.round(lo*1e6)/1e6,
+          };
+        }
+      }
+
       // Step 2: CPA(Closest Point of Approach) 기반 충돌 안전 검사
       // ─ 패턴(8자/타원) column: arc-length shift 로 각 멤버가 고유 sub-WP → minPairwiseDistance 유효
       // ─ 편대이동 column: rendezvous 이후 모든 멤버가 sub-WP 1..N 을 공유(시간 분리 교리).
