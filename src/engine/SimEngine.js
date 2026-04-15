@@ -204,6 +204,11 @@ export default class SimEngine {
       });
       if(allReady){
         for(const mp of members){
+          // barrier 소비: 이 sub-WP 는 다시 barrier 로 인식되면 안 된다.
+          // fig8 loop 가 한 바퀴 돌아 fig8LoopStart 로 돌아올 때 다시 대기하면
+          // 팔로워들은 loop 중간에 있어 그룹에 포함되지 않아 영구 정지 → 리더 freeze.
+          const relTg=mp.targets[mp.curTgt];
+          if(relTg)relTg.formBarrier=false;
           mp.curTgt++;
           const nt=mp.targets[mp.curTgt];
           if(nt){
