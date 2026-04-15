@@ -10,7 +10,7 @@ import {
   defaultWeaponStatus
 } from "./engine/constants.js";
 import { hav, brg, mvPt, sMs, mDs, hms, ela, toRad, toDeg, cLanes, dlCSV } from "./engine/geo.js";
-import { genFig8, genEllipse, insertTurnArc } from "./engine/patterns.js";
+import { genFig8, genEllipse, insertTurnArc, pathArcLen } from "./engine/patterns.js";
 import { formOff, minPairwiseDistance, offsetRoute, syncFormAll } from "./engine/formations.js";
 import { S } from "./styles/theme.js";
 import AB from "./components/ActionButton.jsx";
@@ -212,27 +212,61 @@ export default function App(){
       setUnits(prev=>{const c=[...prev];const wps=[...c[editWP.ui].wps];wps[editWP.wi]=wpObj;
         c[editWP.ui]={...c[editWP.ui],wps:wps.sort((a,b)=>a.start-b.start)};return c;});
     } else {
-      // ── 신규 WP 추가 (편대 포함) ──
-      // Step 1: 편대원별 경유점 생성 — 평행 곡선 (line abreast / IAMSAR parallel-track 교리)
-      //   - 패턴(8자/타원): 각 팔로워가 독자적인 평행 곡선을 추적
-      //     · 곡선 중심(origin/dest)을 8자 축에 수직 방향으로 formOff 만큼 이동
-      //     · 평행 곡선이므로 어느 위상에서도 Euclidean 간격이 정확히 유지됨
-      //     · 동일 인덱스 기준 syncFormAll 로 시간 동기화 → 함께 loop 수행
-      //   - 편대이동: 평행 오프셋 (직선 구간 line abreast)
-      const patrolAxisB=isPatrol?brg(f8OLat,f8OLon,f8DLat,f8DLon):0;
-      const patrolPerpB=(patrolAxisB+90)%360;
+      // ── 신규 WP 추가 (편대 포함) — Column(단종진) 교리 ──
+      // 모든 편대 WP(8자/타원/편대이동)에서 팔로워들은 리더 뒤 일렬로 간격 유지.
+      //
+      // Step 1: 편대원별 경유점 생성
+      //   - 8자/타원 (폐곡선): 호장 균등 리더 curve 를 m*spacing 만큼 arc-length shift
+      //     · kf = m*spacing / segLen, 정수부 k0 + 분수부 frac 로 인접 점 간 선형 보간
+      //     · 팔로워[i] = 리더 curve 상 호장 기준 (i*segLen − m*spacing) 지점
+      //     · syncFormAll 로 세그먼트 시간 동기화 → 동일 인덱스 arrival 보장 → 간격 유지
+      //   - 편대이동 (개곡선): 리더와 동일한 경유점. 측방 offset 제거(라인 어브레스트 폐기).
+      //     · 팔로워 경로 앞에 rendezvous 를 prepend → 초기 집결 후 user speed 로 각자 진행
+      //     · rendezvous = wPts[0] - m*spacing × dir(wPts[0]→wPts[1])
+      //     · syncFormAll 스킵 (세그먼트 시간 균등화는 column 이 아닌 line abreast 를 만듦)
+      const leaderCurveLen=isPatrol?pathArcLen(usePts):0;
+      const Nseg=Math.max(1,usePts.length-1);
+      const segLen=isPatrol&&leaderCurveLen>0?leaderCurveLen/Nseg:0;
       const allMemberPts=allMembers.map((unitIdx,mi)=>{
         if(mi===0||!hasFormation||totalM<=1)return[...usePts.map(p=>({...p}))];
         if(isPatrol){
-          const latOff=formOff(mi,totalM,wFormSpacing); // 부호 있는 측방 오프셋
-          const [fOLat,fOLon]=mvPt(f8OLat,f8OLon,patrolPerpB,latOff);
-          const [fDLat,fDLon]=mvPt(f8DLat,f8DLon,patrolPerpB,latOff);
-          const gen=wTy==="8자기동"?genFig8:genEllipse;
-          return gen(fOLat,fOLon,fDLat,fDLon,f8Range,f8Spd,f8SpdU,maxPlatLen,patternTStart);
+          if(segLen<=0)return[...usePts.map(p=>({...p}))];
+          const kf=(mi*wFormSpacing)/segLen;
+          const k0=Math.floor(kf);
+          const frac=kf-k0;
+          const shifted=[];
+          for(let i=0;i<Nseg;i++){
+            const a=((i-k0)%Nseg+Nseg)%Nseg;
+            const b=((i-k0-1)%Nseg+Nseg)%Nseg;
+            const pa=usePts[a],pb=usePts[b];
+            const lat=pa.lat+(pb.lat-pa.lat)*frac;
+            const lon=pa.lon+(pb.lon-pa.lon)*frac;
+            shifted.push({...pa,lat:Math.round(lat*1e6)/1e6,lon:Math.round(lon*1e6)/1e6});
+          }
+          shifted.push({...shifted[0]});
+          return shifted;
         }
-        const latOff=formOff(mi,totalM,wFormSpacing);
-        return latOff!==0?offsetRoute(usePts,latOff):[...usePts.map(p=>({...p}))];
+        // 편대이동: 리더 경로와 동일 (rendezvous 는 아래에서 prepend)
+        return [...usePts.map(p=>({...p}))];
       });
+
+      // Step 1b: 편대이동 column 의 rendezvous prepend
+      //   - 리더: wPts[0] 을 prepend (0-길이 더미, 길이 맞춤)
+      //   - 팔로워 m: rendezvous_m = wPts[0] 에서 첫 구간 방향의 반대로 m*spacing 이동
+      //   - 결과: 모든 멤버 길이 = N+1, sub-WP 0 은 formBarrier 집결점
+      if(hasFormation&&totalM>1&&wTy==="편대이동"&&usePts.length>=2){
+        const dir0=brg(usePts[0].lat,usePts[0].lon,usePts[1].lat,usePts[1].lon);
+        const backDir=(dir0+180)%360;
+        for(let m=0;m<totalM;m++){
+          let rLat,rLon;
+          if(m===0){rLat=usePts[0].lat;rLon=usePts[0].lon;}
+          else{
+            const [la,lo]=mvPt(usePts[0].lat,usePts[0].lon,backDir,m*wFormSpacing);
+            rLat=Math.round(la*1e6)/1e6;rLon=Math.round(lo*1e6)/1e6;
+          }
+          allMemberPts[m].unshift({...usePts[0],lat:rLat,lon:rLon});
+        }
+      }
 
       // Step 2: CPA(Closest Point of Approach) 기반 충돌 안전 검사
       // ─ COLREGs / USV 스웜 교리: 모든 편대원 쌍의 모든 tick에 대해 최소 이격거리 측정
@@ -253,16 +287,16 @@ export default function App(){
       }
 
       // Step 3: 속도 동기화
-      // ─ 패턴(tPhase 비대칭일 때 세그먼트 길이 차이 보정) / 편대이동 모두 적용
-      // ─ 모든 편대원이 같은 tick에 동일 인덱스 경유점 통과 → CPA 검사가 유효
-      const syncedPts=hasFormation&&totalM>1?syncFormAll(allMemberPts):allMemberPts;
-      // Step 3.5: 패턴(8자/타원) 편대 진입 barrier 마킹
-      //   - 모든 편대원이 각자의 sub-WP 0에 도달하기 전에는 어느 누구도 loop를 시작하면 안 됨
-      //   - SimEngine 의 tick pre-pass 가 `formBarrier && formTotal` 을 사용하여 동시 해제
-      //   - 리더는 patternTStart 로 curve[0] ≈ 현재 위치 → approach ≈ 0
-      //   - 팔로워는 arc-length shift 된 curve[0] 까지 approach 필요 → 몇 tick 지연
-      //   - barrier 없이는 리더가 먼저 loop 진행 → 영구 위상 이탈 → 간격 붕괴
-      if(isPatrol&&hasFormation&&totalM>1){
+      // ─ 8자/타원 column: syncFormAll 로 세그먼트 시간 균등화 (곡률 변동 보정)
+      // ─ 편대이동 column: syncFormAll 스킵 (세그먼트 시간 균등화는 line abreast 를 만듦)
+      //                   대신 각 멤버가 user speed 로 자기 경로 진행 → column 유지
+      const useSync=hasFormation&&totalM>1&&isPatrol;
+      const syncedPts=useSync?syncFormAll(allMemberPts):allMemberPts;
+      // Step 3.5: 편대 진입 barrier 마킹 (8자/타원/편대이동 column 모두)
+      //   - 모든 편대원이 각자의 sub-WP 0(rendezvous 또는 shifted curve[0])에 도달할 때까지 대기
+      //   - SimEngine 의 tick pre-pass 가 `formBarrier && formTotal` 로 동시 해제
+      //   - barrier 없으면 리더가 먼저 진행하여 column 위상이 영구 이탈
+      if(hasFormation&&totalM>1){
         for(let m=0;m<totalM;m++){
           syncedPts[m][0]={...syncedPts[m][0],_formBarrier:true,_formTotal:totalM};
         }
