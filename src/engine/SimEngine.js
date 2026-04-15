@@ -87,8 +87,12 @@ export default class SimEngine {
             _trackId:smoothed[pi]._trackId||null,_targetName:smoothed[pi]._targetName||null,
             fig8:isFig8,fig8LoopStart,fig8EndTime,
             formLeaderId:wpFormLeaderId,formOffset:wpFormOffset,
-            formBarrier:smoothed[pi]._formBarrier===true,
-            formTotal:smoothed[pi]._formTotal||0,
+            // 모든 편대 상태는 w.formation 이 존재할 때만 유효.
+            // 편집 등으로 formation 이 드롭되었는데 sub-WP 데이터에 이전 편대의
+            // _formBarrier/_formTotal 잔재가 남아 있으면 stale group 이 생겨 영구
+            // barrier 대기가 발생함 → isFormation gate 로 차단.
+            formBarrier:isFormation&&smoothed[pi]._formBarrier===true,
+            formTotal:isFormation?(smoothed[pi]._formTotal||0):0,
             formPredecessorId:wpFormPredecessorId,
             formTargetSpacing:wpFormSpacing,
             actions:ptActions,_actTrig:false});

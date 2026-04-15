@@ -211,8 +211,13 @@ export default function App(){
 
     if(editWP){
       // ── WP 편집 모드: 기존 WP 업데이트 ──
+      // 기존 WP 의 formation 필드는 그대로 보존(편집 UI 로 드롭하지 않음).
+      // 이전엔 formation 필드를 누락해 편집 시 formation 정보가 실종 →
+      // 동일 사용자의 다음 individual WP 에서 stale barrier/leader 게이트가 잔류.
+      const existingWp=units[editWP.ui]?.wps?.[editWP.wi];
       const wpObj={name:wN||"WP",start:wSM*60+wSS,duration:wpDurSec,type:wTy,
         concurrent:wConc,waypoints:usePts.map(p=>({...p,speed:+p.speed})),actions:finalActs,
+        formation:existingWp?.formation||null,
         ...(wMaxSpd>0?{maxSpeed:+wMaxSpd,maxSpeedUnit:wMaxSpdU}:{}),
         ...(wTy==="소노부이투하"?{sonobuoyConfig:{depth:wSbDepth,duration:wSbDur}}:{}),
         ...(wTy==="8자기동"?{fig8Config:{oLat:f8OLat,oLon:f8OLon,dLat:f8DLat,dLon:f8DLon,range:f8Range},fig8Loop:true}:{}),
