@@ -440,13 +440,30 @@ export default class SimEngine {
         }
         continue;
       }
-      // ── 편대 멤버: 리더가 실제로 이동 상태일 때만 멤버도 이동 ──
-      // 게이트는 현재 타겟 단위(tg.formLeaderId)로 판단 — 편대 WP에서만 작동, 이후 일반 WP에서는 독립 이동
+      // ── 편대 멤버 리더 게이트 ──
+      // 리더가 "같은 편대 WP 에 아직 도달하지 않은" 경우에만 팔로워를 대기시킨다.
+      // 리더가 이미 이 편대 WP 를 떠났다면(다음 WP 로 전환 또는 targets 소진),
+      // 팔로워는 자신의 남은 sub-WP 를 독립적으로 완료해야 한다. 그렇지 않으면
+      // 리더 다음 WP 의 wpStart 가 미래일 때(예: 편대 종료 후 60초 뒤 개별 이동 WP)
+      // 팔로워가 영구 정지 → 자신의 마지막 편대 sub-WP 미도달 → 개별 이동 WP 미실행.
       if(tg.formLeaderId){
         const leader=this.platforms.find(lp=>lp.platformId===tg.formLeaderId);
-        const ltg=leader?.targets[leader?.curTgt];
-        const leaderReady=leader&&leader.active&&leader.curTgt<leader.targets.length&&ltg&&this.simTime>=ltg.wpStart;
-        if(!leaderReady){p.speedMs=0;continue;}
+        if(leader&&leader.active&&leader.curTgt<leader.targets.length){
+          const ltg=leader.targets[leader.curTgt];
+          if(ltg.wpName===tg.wpName){
+            // 리더가 동일 편대 WP 상 — wpStart 체크 유지
+            if(this.simTime<ltg.wpStart){p.speedMs=0;continue;}
+          } else {
+            // 리더가 다른 WP — 이 편대 WP 에 아직 도달하지 않았으면(leaderBefore) 대기.
+            // 이미 지나갔으면 팔로워 독립 완료 허용.
+            let leaderBefore=false;
+            for(let i=leader.curTgt+1;i<leader.targets.length;i++){
+              if(leader.targets[i].wpName===tg.wpName){leaderBefore=true;break;}
+            }
+            if(leaderBefore){p.speedMs=0;continue;}
+          }
+        }
+        // leader inactive 또는 targets 소진 → 게이트 해제 (팔로워 독립 완료)
       }
       // ── 이동: 모든 유닛이 자기 WP 방향으로 이동 ──
       const prevTgt=p.curTgt>0?p.targets[p.curTgt-1]:null;
