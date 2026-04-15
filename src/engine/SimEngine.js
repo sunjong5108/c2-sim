@@ -138,6 +138,9 @@ export default class SimEngine {
         curTgt:0,active:true,targets,scheduledActs,suicideTrackId,arriveM,turnRate,
         sensorRanges:u.sensorRanges||{radar:RADAR_RANGE,tass:TASS_RANGE,sonobuoy:SONOBUOY_RANGE,rcws:2000},
         liveWpn:{...(u.weaponStatus?.consumable||{})},liveSen:{...(u.weaponStatus?.persistent||{})},
+        // initSen: 최초 유닛 설정의 persistent 상태 불변 스냅샷. 0xDE31 보고 전용.
+        // liveSen 은 WP action 에 의해 토글되지만 탑재 여부 보고는 초기 설정만 반영.
+        initSen:{...(u.weaponStatus?.persistent||{})},
         rcws_ammo:u.weaponStatus?.consumable?.rcws_ammo||0,rcwsFiring:[],activeActs:[]};
     });
   }
@@ -632,7 +635,7 @@ export default class SimEngine {
           spd:Math.round(mDs(p.speedMs,p.speedUnit||"knots")*100)/100,spdU:p.speedUnit||"knots",
           fuel:Math.round(p.fuel*10)/10,
           curTgt:p.curTgt,totalTgts:p.targets?.length||0,totalWps,curWpName,active:p.active,
-          lw:{...p.liveWpn},ls:{...p.liveSen},acts:p.activeActs||[],
+          lw:{...p.liveWpn},ls:{...p.liveSen},iSen:{...p.initSen},acts:p.activeActs||[],
           rcws_ammo:p.rcws_ammo||0,rcwsFiring:(p.rcwsFiring||[]).map(f=>({...f})),
           suicideTrackId:p.suicideTrackId||null,formLeaderId:ct?.formLeaderId||null,formOffset:ct?.formOffset||0};
       }),
@@ -648,7 +651,8 @@ export default class SimEngine {
   csv_0xDE31(){ // 1Hz
     let c="sim_time_sec,abs_time,id,altitude,fuel_status,heading,latitude,longitude,speed,speed_unit,weapon_status\n";
     for(const s of this._hz(1))for(const p of s.platforms){if(p.side==="enemy")continue;
-      const ws=JSON.stringify({consumable:{sonobuoy:p.lw?.sonobuoy??0,blueshark:p.lw?.blueshark??0,rcws:p.lw?.rcws??0,drone:p.lw?.drone??0},persistent:{tass:p.ls?.tass??0,"eo/ir":p.ls?.["eo/ir"]??0}});
+      // persistent 는 최초 유닛 설정(initSen) 만 반영. WP action 의 runtime 토글(liveSen) 은 반영 안 함.
+      const ws=JSON.stringify({consumable:{sonobuoy:p.lw?.sonobuoy??0,blueshark:p.lw?.blueshark??0,rcws:p.lw?.rcws??0,drone:p.lw?.drone??0},persistent:{tass:p.iSen?.tass??0,"eo/ir":p.iSen?.["eo/ir"]??0}});
       c+=`${s.t},${s.abs},${p.id},${p.alt},${p.fuel},${p.hdg},${p.lat},${p.lon},${p.spd},${p.spdU},"${ws.replace(/"/g,'""')}"\n`;}
     return c;
   }
