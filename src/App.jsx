@@ -278,20 +278,27 @@ export default function App(){
       }
 
       // Step 2: CPA(Closest Point of Approach) 기반 충돌 안전 검사
-      // ─ COLREGs / USV 스웜 교리: 모든 편대원 쌍의 모든 tick에 대해 최소 이격거리 측정
-      // ─ Ship Safety Distance = max(30m, 플랫폼 길이 × 2) 미만이면 생성 거부
+      // ─ 패턴(8자/타원) column: arc-length shift 로 각 멤버가 고유 sub-WP → minPairwiseDistance 유효
+      // ─ 편대이동 column: rendezvous 이후 모든 멤버가 sub-WP 1..N 을 공유(시간 분리 교리).
+      //   인덱스별 Euclidean 거리를 보는 minPairwiseDistance 는 공유 지점에서 0 을 리턴하여
+      //   오탐지 → wFormSpacing ≥ safetyM 직접 검사로 대체.
       if(hasFormation&&totalM>1){
-        const {minD,worst}=minPairwiseDistance(allMemberPts);
         const safetyM=Math.max(30,Math.round(maxPlatLen*2));
-        if(minD<safetyM){
-          const pairMsg=worst?`편대원 #${worst.i+1}↔#${worst.j+1} (tick ${worst.k})`:"편대원 쌍";
-          const hint=isPatrol
-            ?(wTy==="8자기동"
+        if(wTy==="편대이동"){
+          if(wFormSpacing<safetyM){
+            alert(`⚠ 편대 간격 부족\n\n설정 간격: ${wFormSpacing}m\n안전 거리: ${safetyM}m (최대 플랫폼 길이 ${maxPlatLen}m × 2)\n\n간격을 ${safetyM}m 이상으로 설정하세요.`);
+            return;
+          }
+        } else {
+          const {minD,worst}=minPairwiseDistance(allMemberPts);
+          if(minD<safetyM){
+            const pairMsg=worst?`편대원 #${worst.i+1}↔#${worst.j+1} (tick ${worst.k})`:"편대원 쌍";
+            const hint=wTy==="8자기동"
               ?"\n\n원인: 8자기동 자기교차(중앙 크로스오버)로 인해 간격이 곡선 둘레의 절반 근처일 때 충돌이 발생합니다. 간격을 늘리거나 편대원 수를 줄여주세요."
-              :"\n\n원인: 간격이 너무 작아 편대원이 곡선 상 같은 지점에 배치됩니다. 간격을 늘려주세요.")
-            :"\n\n원인: 평행 오프셋 간격이 안전거리 미만입니다. 간격을 늘려주세요.";
-          alert(`⚠ 편대 충돌 위험 감지\n\n최소 이격거리: ${Math.round(minD)}m (안전거리 ${safetyM}m 미달)\n위치: ${pairMsg}\n현재 간격: ${wFormSpacing}m${hint}`);
-          return;
+              :"\n\n원인: 간격이 너무 작아 편대원이 곡선 상 같은 지점에 배치됩니다. 간격을 늘려주세요.";
+            alert(`⚠ 편대 충돌 위험 감지\n\n최소 이격거리: ${Math.round(minD)}m (안전거리 ${safetyM}m 미달)\n위치: ${pairMsg}\n현재 간격: ${wFormSpacing}m${hint}`);
+            return;
+          }
         }
       }
 
