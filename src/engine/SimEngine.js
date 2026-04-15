@@ -148,6 +148,14 @@ export default class SimEngine {
       p.lat=nl;p.lon=no;
       return true;
     }
+    // 편대 집결(formBarrier) 단계 감지 — 같은 편대의 다른 멤버들은 서로 장애물로 판정하지 않음.
+    // 이유: 팔로워가 리더 뒤 m*spacing 호장 지점까지 직진해야 하는데, 대기 중인 리더가
+    //       경로상에 있으면 safetyD 회피로 인해 영원히 도달 불가 → barrier 해제 실패 → 정지.
+    // minPairwiseDistance 가 sub-WP 단계에서 safetyM 을 보장하므로, 집결 이후(barrier 소비)
+    // 에는 정상 회피 로직이 재개됨.
+    const pTg=p.targets?.[p.curTgt];
+    const pAssembly=!!pTg?.formBarrier;
+    const pLid=pAssembly?(pTg.formLeaderId||p.platformId):null;
     const deflections=[0,15,-15,30,-30,45,-45,60,-60,90,-90];
     for(const deflect of deflections){
       const tryH=(p.heading+deflect+360)%360;
@@ -155,6 +163,13 @@ export default class SimEngine {
       let collide=false;
       for(const q of this.platforms){
         if(q===p||!q.active||q.side!=="friendly")continue;
+        if(pAssembly){
+          const qTg=q.targets?.[q.curTgt];
+          if(qTg?.formBarrier){
+            const qLid=qTg.formLeaderId||q.platformId;
+            if(qLid===pLid)continue; // 같은 편대 집결 중인 멤버는 skip
+          }
+        }
         const safetyD=Math.max(20,((p.platformLen||10)+(q.platformLen||10))/2+10);
         const dBefore=hav(p.lat,p.lon,q.lat,q.lon);
         const dAfter=hav(nl,no,q.lat,q.lon);
@@ -353,7 +368,8 @@ export default class SimEngine {
       const dist=hav(p.lat,p.lon,tg.lat,tg.lon);
       const arrM=p.arriveM||WP_ARRIVE_M;
       // ── 경유점 도착: 모든 유닛 동일 처리 (편대 멤버 포함) ──
-      if(dist<arrM){
+      // 중요: barrier 는 fig8EndTime 이전일 때만 대기. 지난 뒤에는 아래 exit 블록이 처리.
+      if(dist<arrM&&!(tg.fig8&&this.simTime>=tg.fig8EndTime)){
         // 편대 진입 barrier: 전원이 sub-WP 0 에 도달할 때까지 대기
         // 실제 해제(curTgt++)는 _releaseFormationBarriers pre-pass 가 담당.
         if(tg.formBarrier){p.speedMs=0;continue;}
