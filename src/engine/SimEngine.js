@@ -458,22 +458,29 @@ export default class SimEngine {
       // 팔로워는 직전 유닛(predecessor)과의 실제 거리를 측정해 속도를 조정.
       //   speedMs = pred.speedMs + k × (actualDist − targetSpacing)
       //   k = 0.3  (ε(t+1) ≈ (1−k)·ε(t), 수 초 내 수렴)
-      // 이는 syncFormAll 정적 속도 + avoidance/loopback 오차 누적으로 표류하는 간격을
-      // 런타임에서 능동 교정한다. barrier(집결) 단계에서는 비활성화.
+      // 중요: 리더가 이 formation WP 를 떠났다면 station-keeping 을 비활성화한다.
+      //   리더가 다음 WP 로 전환했거나 마지막 sub-WP 에서 정지한 경우, 팔로워의
+      //   `err ≈ 0` 으로 newSpd ≈ pred.speedMs(= 0 가능) → 팔로워가 자기 sub-WP 에
+      //   도달하지 못한 채 정지. 즉 formation 종료 후 individual WP 로 전환 실패.
+      //   pred 가 동일 wpName 의 WP 에 있을 때만 column 편대 문맥이 유효.
       if(tg.formPredecessorId&&!tg.formBarrier){
         const pred=this.platforms.find(lp=>lp.platformId===tg.formPredecessorId);
-        if(pred&&pred.active){
-          const actualD=hav(p.lat,p.lon,pred.lat,pred.lon);
-          const targetD=tg.formTargetSpacing||0;
-          if(targetD>0){
-            const err=actualD-targetD;
-            const kP=0.3;
-            const baseSpd=pred.speedMs>0?pred.speedMs:p.speedMs;
-            let newSpd=baseSpd+kP*err;
-            if(newSpd<0)newSpd=0;
-            const cap=segMaxMs>0?segMaxMs:(baseSpd>0?baseSpd*2+5:30);
-            if(newSpd>cap)newSpd=cap;
-            p.speedMs=newSpd;
+        if(pred&&pred.active&&pred.curTgt<pred.targets.length){
+          const predTg=pred.targets[pred.curTgt];
+          const predOnSameWp=predTg&&predTg.wpName===tg.wpName;
+          if(predOnSameWp){
+            const actualD=hav(p.lat,p.lon,pred.lat,pred.lon);
+            const targetD=tg.formTargetSpacing||0;
+            if(targetD>0){
+              const err=actualD-targetD;
+              const kP=0.3;
+              const baseSpd=pred.speedMs>0?pred.speedMs:p.speedMs;
+              let newSpd=baseSpd+kP*err;
+              if(newSpd<0)newSpd=0;
+              const cap=segMaxMs>0?segMaxMs:(baseSpd>0?baseSpd*2+5:30);
+              if(newSpd>cap)newSpd=cap;
+              p.speedMs=newSpd;
+            }
           }
         }
       }
