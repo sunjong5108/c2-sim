@@ -130,10 +130,9 @@ export default function App(){
     // 8자기동/타원기동: 자동 경유점 생성 (플랫폼 길이 반영)
     // 패턴 시작점은 리더 유닛의 현재 위치(마지막 경유점)에 가장 가까운 곡선 지점으로 회전
     let usePts=wPts;
-    let patternTStart=0; // 리더 곡선의 절대 parametric 위상 (팔로워 계산에 사용)
     if(wTy==="8자기동"||wTy==="타원기동"){
       const gen=wTy==="8자기동"?genFig8:genEllipse;
-      // Step A: 기본 곡선 생성 (tPhase=0)
+      // Step A: 기본 곡선 생성 (tPhase=0, 호장 균등 N+1 점)
       usePts=gen(f8OLat,f8OLon,f8DLat,f8DLon,f8Range,f8Spd,f8SpdU,maxPlatLen,0);
       if(usePts.length===0)return;
       // Step B: 리더 유닛의 현재 위치(마지막 기존 WP의 마지막 경유점) 찾기
@@ -141,18 +140,28 @@ export default function App(){
       const lastExistingWp=leaderU?.wps?.length?leaderU.wps[leaderU.wps.length-1]:null;
       const lastPt=lastExistingWp?.waypoints?.length?lastExistingWp.waypoints[lastExistingWp.waypoints.length-1]:null;
       if(lastPt){
-        // Step C: usePts에서 lastPt에 가장 가까운 인덱스 탐색
+        // Step C: usePts(호장 균등)에서 lastPt에 가장 가까운 인덱스 탐색
         const Nseg=usePts.length-1;
         let bestIdx=0,bestD=Infinity;
         for(let i=0;i<Nseg;i++){
           const d=hav(lastPt.lat,lastPt.lon,usePts[i].lat,usePts[i].lon);
           if(d<bestD){bestD=d;bestIdx=i;}
         }
-        // Step D: tStart 계산 & 리더 곡선 재생성 (회전된 시작점)
+        // Step D: 배열 순환 shift 로 회전 (parametric regen 금지)
+        //   이전 방식: patternTStart=(bestIdx/Nseg)*2π → gen(..., patternTStart) 로 재생성.
+        //   문제: arc-length index i 는 parametric t=2πi/N 과 비례하지 않음
+        //         (타원 a≠b, Lissajous 모두 비선형). 틀린 위상으로 regen 되면
+        //         새 pts[0] 이 lastPt 로부터 수십~수백 m 떨어져 approach 거리 과다,
+        //         barrier 집결 중 fig8EndTime 도달하여 유닛이 멈춤.
+        //   해결: 이미 호장 균등한 usePts 를 bestIdx 만큼 배열 순환 shift.
+        //         pts[0] 이 정확히 lastPt 근접 호장점 → approach ≤ segLen/2 보장.
         if(bestIdx!==0){
-          patternTStart=(bestIdx/Nseg)*2*Math.PI;
-          usePts=gen(f8OLat,f8OLon,f8DLat,f8DLon,f8Range,f8Spd,f8SpdU,maxPlatLen,patternTStart);
-          if(usePts.length===0)return;
+          const rot=[];
+          for(let i=0;i<Nseg;i++){
+            rot.push({...usePts[(i+bestIdx)%Nseg]});
+          }
+          rot.push({...rot[0]});
+          usePts=rot;
         }
       }
     }
