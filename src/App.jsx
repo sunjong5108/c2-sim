@@ -319,12 +319,16 @@ export default function App(){
             ?(isPatrol?-mi*wFormSpacing:formOff(mi,totalM,wFormSpacing))
             :0;
           const leaderPlatformId=c[allMembers[0]]?.platformId;
+          // Station-keeping: 직전 편대원(immediate predecessor)의 platformId
+          //   리더(mi=0) → 없음; 팔로워 mi → allMembers[mi-1]
+          //   런타임 P 제어가 이 유닛과의 거리를 wFormSpacing 으로 유지하도록 속도 조절
+          const predecessorPlatformId=mi>0?c[allMembers[mi-1]]?.platformId:null;
           const wpObj={name:totalM>1?`${wN||"WP"}-F${mi+1}`:wN||"WP",
             start:wSM*60+wSS,duration:wpDurSec,type:wTy,
             concurrent:wConc,
             waypoints:syncedPts[mi].map(p=>({...p,speed:+p.speed})),
             actions:mi===0?finalActs:[],
-            formation:hasFormation?{role:mi===0?"leader":"member",leaderId:leaderPlatformId,spacing:wFormSpacing,total:totalM,offset:Math.round(off)}:null,
+            formation:hasFormation?{role:mi===0?"leader":"member",leaderId:leaderPlatformId,predecessorId:predecessorPlatformId,spacing:wFormSpacing,total:totalM,offset:Math.round(off)}:null,
             ...(wMaxSpd>0?{maxSpeed:+wMaxSpd,maxSpeedUnit:wMaxSpdU}:{}),
             ...(wTy==="소노부이투하"?{sonobuoyConfig:{depth:wSbDepth,duration:wSbDur}}:{}),
             ...(wTy==="8자기동"?{fig8Config:{oLat:f8OLat,oLon:f8OLon,dLat:f8DLat,dLon:f8DLon,range:f8Range},fig8Loop:true}:{}),

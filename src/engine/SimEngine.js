@@ -59,6 +59,9 @@ export default class SimEngine {
         // WP 단위 편대 멤버 게이트: 이 WP의 sub-target에만 리더 id 부여 (다음 WP는 독립)
         const wpFormLeaderId=(w.formation?.role==="member"&&w.formation?.leaderId)?w.formation.leaderId:null;
         const wpFormOffset=w.formation?.offset||0;
+        // Station-keeping: 이 편대원의 직전 유닛 id + 목표 간격 (런타임 P 제어)
+        const wpFormPredecessorId=(w.formation?.role==="member"&&w.formation?.predecessorId)?w.formation.predecessorId:null;
+        const wpFormSpacing=w.formation?.spacing||0;
         // 경유점 = 원본 그대로 사용 (COP 표시와 실제 이동 경로 일치 보장)
         // 선회율 제한은 tick에서 실시간 적용 → 별도 아크 경유점 불필요
         const smoothed=pts;
@@ -86,6 +89,8 @@ export default class SimEngine {
             formLeaderId:wpFormLeaderId,formOffset:wpFormOffset,
             formBarrier:smoothed[pi]._formBarrier===true,
             formTotal:smoothed[pi]._formTotal||0,
+            formPredecessorId:wpFormPredecessorId,
+            formTargetSpacing:wpFormSpacing,
             actions:ptActions,_actTrig:false});
         }
         // ── 소요시간 기반 속도 보정 (fig8/충돌공격/편대 WP 제외) ──
@@ -442,6 +447,29 @@ export default class SimEngine {
       // ── WP 최대 속력 클램프: syncFormAll/스케일링 결과가 maxSpeed를 초과하지 않도록 ──
       const segMaxMs=(prevTgt&&prevTgt.wpName===tg.wpName)?prevTgt.maxSpeedMs:tg.maxSpeedMs;
       if(segMaxMs>0&&p.speedMs>segMaxMs)p.speedMs=segMaxMs;
+      // ── Station-keeping (column 편대 런타임 P 제어) ──
+      // 팔로워는 직전 유닛(predecessor)과의 실제 거리를 측정해 속도를 조정.
+      //   speedMs = pred.speedMs + k × (actualDist − targetSpacing)
+      //   k = 0.3  (ε(t+1) ≈ (1−k)·ε(t), 수 초 내 수렴)
+      // 이는 syncFormAll 정적 속도 + avoidance/loopback 오차 누적으로 표류하는 간격을
+      // 런타임에서 능동 교정한다. barrier(집결) 단계에서는 비활성화.
+      if(tg.formPredecessorId&&!tg.formBarrier){
+        const pred=this.platforms.find(lp=>lp.platformId===tg.formPredecessorId);
+        if(pred&&pred.active){
+          const actualD=hav(p.lat,p.lon,pred.lat,pred.lon);
+          const targetD=tg.formTargetSpacing||0;
+          if(targetD>0){
+            const err=actualD-targetD;
+            const kP=0.3;
+            const baseSpd=pred.speedMs>0?pred.speedMs:p.speedMs;
+            let newSpd=baseSpd+kP*err;
+            if(newSpd<0)newSpd=0;
+            const cap=segMaxMs>0?segMaxMs:(baseSpd>0?baseSpd*2+5:30);
+            if(newSpd>cap)newSpd=cap;
+            p.speedMs=newSpd;
+          }
+        }
+      }
       if(dist>1){
         const desiredB=brg(p.lat,p.lon,tg.lat,tg.lon);
         const isPatternWP=tg.fig8||tg.wpType==="편대이동";
