@@ -1,6 +1,8 @@
 /* C2 Protocol Simulator — Theme */
 
-export const S={
+import type { CSSProperties } from "react";
+
+export const S: Record<string, CSSProperties> = {
   root:{fontFamily:"'Noto Sans KR',system-ui,sans-serif",background:"#0a0e17",color:"#e2e8f0",height:"100vh",display:"flex",flexDirection:"column",overflow:"hidden"},
   hdr:{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"7px 14px",borderBottom:"1px solid #1e2d4a",background:"linear-gradient(180deg,rgba(15,23,42,.95),#0a0e17)",flexShrink:0},
   hL:{display:"flex",alignItems:"center",gap:8},logo:{width:28,height:28,background:"linear-gradient(135deg,#3b82f6,#06b6d4)",borderRadius:5,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,fontSize:10,color:"#fff"},

@@ -1,0 +1,4243 @@
+{
+  "version": 5,
+  "scenarioStart": "06:00",
+  "totalDurationSec": 1200,
+  "tickIntervalSec": 60,
+  "units": [
+    {
+      "name": "[1편대] 전투용 USV",
+      "side": "friendly",
+      "type": "USV",
+      "platformType": "전투용USV",
+      "platformId": 2101,
+      "speedUnit": "knots",
+      "weaponStatus": {
+        "consumable": {
+          "sonobuoy": 0,
+          "blueshark": 0,
+          "rcws": 1,
+          "drone": 1,
+          "rcws_ammo": 700
+        },
+        "persistent": {
+          "tass": 1,
+          "eo/ir": 1
+        }
+      },
+      "sensorRanges": {
+        "radar": 15000,
+        "tass": 1200,
+        "sonobuoy": 300,
+        "rcws": 2000
+      },
+      "wps": [
+        {
+          "name": "NLL 근방 이동",
+          "start": 0,
+          "duration": 204,
+          "type": "이동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.070939,
+              "lon": 129.09845,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.061701,
+              "lon": 129.101019,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [],
+          "maxSpeed": 15,
+          "maxSpeedUnit": "knots"
+        },
+        {
+          "name": "WP-07-F1",
+          "start": 266,
+          "duration": 375,
+          "type": "8자기동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.062616,
+              "lon": 129.099428,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots",
+              "_formBarrier": true,
+              "_formTotal": 3
+            },
+            {
+              "lat": 35.06278,
+              "lon": 129.099679,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.062919,
+              "lon": 129.099953,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063038,
+              "lon": 129.10024,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063143,
+              "lon": 129.100535,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063238,
+              "lon": 129.100836,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063325,
+              "lon": 129.10114,
+              "alt": 0,
+              "speed": 9.989058,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063406,
+              "lon": 129.101446,
+              "alt": 0,
+              "speed": 9.966236,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063484,
+              "lon": 129.101753,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.06356049999999,
+              "lon": 129.1020615,
+              "alt": 0,
+              "speed": 9.999399,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063637,
+              "lon": 129.10237,
+              "alt": 0,
+              "speed": 9.994056,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063715,
+              "lon": 129.102677,
+              "alt": 0,
+              "speed": 9.953645,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063796,
+              "lon": 129.102983,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063883,
+              "lon": 129.103287,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063978,
+              "lon": 129.103588,
+              "alt": 0,
+              "speed": 9.995913,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064083,
+              "lon": 129.103883,
+              "alt": 0,
+              "speed": 9.97122,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064202,
+              "lon": 129.10417,
+              "alt": 0,
+              "speed": 9.967825,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.06434,
+              "lon": 129.104444,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064505,
+              "lon": 129.104695,
+              "alt": 0,
+              "speed": 9.989705,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064703,
+              "lon": 129.104907,
+              "alt": 0,
+              "speed": 9.953293,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064937,
+              "lon": 129.105053,
+              "alt": 0,
+              "speed": 9.931618,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.065196,
+              "lon": 129.105103,
+              "alt": 0,
+              "speed": 9.961368,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.065455,
+              "lon": 129.105052,
+              "alt": 0,
+              "speed": 9.997923,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.065695,
+              "lon": 129.10492,
+              "alt": 0,
+              "speed": 9.994814,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.065906,
+              "lon": 129.104728,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.066086,
+              "lon": 129.104493,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.066231,
+              "lon": 129.104224,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.066334,
+              "lon": 129.103929,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.066384,
+              "lon": 129.103613,
+              "alt": 0,
+              "speed": 9.991217,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.066363,
+              "lon": 129.103293,
+              "alt": 0,
+              "speed": 9.997229,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.066263,
+              "lon": 129.102997,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.066092,
+              "lon": 129.102753,
+              "alt": 0,
+              "speed": 9.997601,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.065877,
+              "lon": 129.102568,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.065639,
+              "lon": 129.102431,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.065389,
+              "lon": 129.10233,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.065133,
+              "lon": 129.102256,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064873,
+              "lon": 129.1022,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064612,
+              "lon": 129.102158,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064349,
+              "lon": 129.102126,
+              "alt": 0,
+              "speed": 9.945228,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064087,
+              "lon": 129.102101,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063824,
+              "lon": 129.10208,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.06356,
+              "lon": 129.102061,
+              "alt": 0,
+              "speed": 9.977835,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063297,
+              "lon": 129.102043,
+              "alt": 0,
+              "speed": 9.956341,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063034,
+              "lon": 129.102022,
+              "alt": 0,
+              "speed": 9.935352,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.062772,
+              "lon": 129.101997,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.062509,
+              "lon": 129.101965,
+              "alt": 0,
+              "speed": 9.992185,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.062248,
+              "lon": 129.101923,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.061988,
+              "lon": 129.101867,
+              "alt": 0,
+              "speed": 9.947429,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.061732,
+              "lon": 129.101793,
+              "alt": 0,
+              "speed": 9.980067,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.061482,
+              "lon": 129.101692,
+              "alt": 0,
+              "speed": 9.958571,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.061244,
+              "lon": 129.101555,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.061029,
+              "lon": 129.10137,
+              "alt": 0,
+              "speed": 9.941696,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.060858,
+              "lon": 129.101126,
+              "alt": 0,
+              "speed": 9.976942,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.060758,
+              "lon": 129.10083,
+              "alt": 0,
+              "speed": 9.936717,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.060737,
+              "lon": 129.10051,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.060787,
+              "lon": 129.100194,
+              "alt": 0,
+              "speed": 9.981299,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.06089,
+              "lon": 129.099899,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.061035,
+              "lon": 129.09963,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.061215,
+              "lon": 129.099395,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.061426,
+              "lon": 129.099204,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.061665,
+              "lon": 129.099071,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.061925,
+              "lon": 129.09902,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.062184,
+              "lon": 129.099071,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.062418,
+              "lon": 129.099216,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.062616,
+              "lon": 129.099428,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [],
+          "formation": {
+            "role": "leader",
+            "leaderId": 2101,
+            "predecessorId": null,
+            "spacing": 100,
+            "total": 3,
+            "offset": 0
+          },
+          "maxSpeed": 10,
+          "maxSpeedUnit": "knots",
+          "fig8Config": {
+            "oLat": 35.061035,
+            "oLon": 129.09963,
+            "dLat": 35.066086,
+            "dLon": 129.104493,
+            "range": 250
+          },
+          "fig8Loop": true
+        },
+        {
+          "name": "1차 경고 사격",
+          "start": 555,
+          "duration": 15,
+          "type": "타격",
+          "concurrent": true,
+          "waypoints": [
+            {
+              "lat": 35.063838,
+              "lon": 129.10163,
+              "alt": 0,
+              "speed": 15,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [
+            {
+              "category": "weapon",
+              "weaponKey": "rcws",
+              "weaponType": 2,
+              "key": "rcws",
+              "type": 2,
+              "label": "RCWS 사격",
+              "icon": "🟠",
+              "color": "#f97316",
+              "fields": [
+                "target_lat",
+                "target_lon",
+                "ref_track_id",
+                "rounds_per_burst",
+                "burst_count",
+                "burst_interval"
+              ],
+              "params": {
+                "target_lat": 35.0618,
+                "target_lon": 129.1047,
+                "ref_track_id": 0,
+                "rounds_per_burst": 5,
+                "burst_count": 3,
+                "burst_interval": 2,
+                "_targetName": null
+              }
+            }
+          ],
+          "formation": null
+        },
+        {
+          "name": "2차 경고 사격",
+          "start": 575,
+          "duration": 15,
+          "type": "타격",
+          "concurrent": true,
+          "waypoints": [
+            {
+              "lat": 35.063838,
+              "lon": 129.10163,
+              "alt": 0,
+              "speed": 15,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [
+            {
+              "category": "weapon",
+              "weaponKey": "rcws",
+              "weaponType": 2,
+              "key": "rcws",
+              "type": 2,
+              "label": "RCWS 사격",
+              "icon": "🟠",
+              "color": "#f97316",
+              "fields": [
+                "target_lat",
+                "target_lon",
+                "ref_track_id",
+                "rounds_per_burst",
+                "burst_count",
+                "burst_interval"
+              ],
+              "params": {
+                "target_lat": 35.0618,
+                "target_lon": 129.1047,
+                "ref_track_id": 0,
+                "rounds_per_burst": 5,
+                "burst_count": 3,
+                "burst_interval": 2,
+                "_targetName": null
+              }
+            }
+          ]
+        },
+        {
+          "name": "대응/격파 사격",
+          "start": 600,
+          "duration": 40,
+          "type": "타격",
+          "concurrent": true,
+          "waypoints": [
+            {
+              "lat": 35.063838,
+              "lon": 129.10163,
+              "alt": 0,
+              "speed": 15,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [
+            {
+              "category": "weapon",
+              "weaponKey": "rcws",
+              "weaponType": 2,
+              "key": "rcws",
+              "type": 2,
+              "label": "RCWS 사격",
+              "icon": "🟠",
+              "color": "#f97316",
+              "fields": [
+                "target_lat",
+                "target_lon",
+                "ref_track_id",
+                "rounds_per_burst",
+                "burst_count",
+                "burst_interval"
+              ],
+              "params": {
+                "target_lat": 35.045927,
+                "target_lon": 129.126671,
+                "ref_track_id": 9002,
+                "rounds_per_burst": 5,
+                "burst_count": 3,
+                "burst_interval": 2,
+                "_targetName": "적 수상함1"
+              }
+            }
+          ]
+        },
+        {
+          "name": "충돌 공격 전 후퇴",
+          "start": 641,
+          "duration": 150,
+          "type": "이동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.061704,
+              "lon": 129.101022,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064919,
+              "lon": 129.097368,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [],
+          "maxSpeed": 15,
+          "maxSpeedUnit": "knots"
+        },
+        {
+          "name": "자폭 드론 발사",
+          "start": 674,
+          "duration": 37,
+          "type": "타격",
+          "concurrent": true,
+          "waypoints": [
+            {
+              "lat": 35.064919,
+              "lon": 129.097368,
+              "alt": 0,
+              "speed": 15,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [
+            {
+              "category": "weapon",
+              "weaponKey": "drone",
+              "weaponType": 3,
+              "key": "drone",
+              "type": 3,
+              "label": "자폭드론 발사",
+              "icon": "🟣",
+              "color": "#8b5cf6",
+              "fields": [
+                "target_lat",
+                "target_lon",
+                "cruise_altitude",
+                "cruise_speed",
+                "loiter_radius"
+              ],
+              "params": {
+                "target_lat": 35.066189,
+                "target_lon": 129.138792,
+                "cruise_altitude": 200,
+                "cruise_speed": 40,
+                "loiter_radius": 500,
+                "ref_track_id": 9003,
+                "_targetName": "적 수상함2"
+              }
+            }
+          ]
+        }
+      ],
+      "platformLen": 40
+    },
+    {
+      "name": "[1편대] 해검3",
+      "side": "friendly",
+      "type": "USV",
+      "platformType": "해검3",
+      "platformId": 1201,
+      "speedUnit": "knots",
+      "weaponStatus": {
+        "consumable": {
+          "sonobuoy": 3,
+          "blueshark": 0,
+          "rcws": 0,
+          "drone": 0,
+          "rcws_ammo": 0
+        },
+        "persistent": {
+          "tass": 0,
+          "eo/ir": 1
+        }
+      },
+      "sensorRanges": {
+        "radar": 15000,
+        "tass": 1200,
+        "sonobuoy": 300,
+        "rcws": 2000
+      },
+      "wps": [
+        {
+          "name": "NLL 근방 이동",
+          "start": 0,
+          "duration": 206,
+          "type": "이동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.07096,
+              "lon": 129.097782,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.061544,
+              "lon": 129.09986,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [],
+          "maxSpeed": 10,
+          "maxSpeedUnit": "knots"
+        },
+        {
+          "name": "WP-07-F2",
+          "start": 266,
+          "duration": 375,
+          "type": "8자기동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.061817,
+              "lon": 129.099041,
+              "alt": 0,
+              "speed": 9.856386,
+              "speedUnit": "knots",
+              "_formBarrier": true,
+              "_formTotal": 3
+            },
+            {
+              "lat": 35.062076,
+              "lon": 129.09905,
+              "alt": 0,
+              "speed": 9.850378,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.062321,
+              "lon": 129.099156,
+              "alt": 0,
+              "speed": 9.906209,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.062534,
+              "lon": 129.09934,
+              "alt": 0,
+              "speed": 9.930493,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.062712,
+              "lon": 129.099574,
+              "alt": 0,
+              "speed": 9.965854,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.062861,
+              "lon": 129.099839,
+              "alt": 0,
+              "speed": 9.967245,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.062988,
+              "lon": 129.10012,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063099,
+              "lon": 129.100412,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063198,
+              "lon": 129.100711,
+              "alt": 0,
+              "speed": 9.983476,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063289,
+              "lon": 129.101013,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063372,
+              "lon": 129.101319,
+              "alt": 0,
+              "speed": 9.987248,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063452,
+              "lon": 129.101625,
+              "alt": 0,
+              "speed": 9.967363,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063529,
+              "lon": 129.101933,
+              "alt": 0,
+              "speed": 9.988988,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063605,
+              "lon": 129.102241,
+              "alt": 0,
+              "speed": 9.993906,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063683,
+              "lon": 129.102549,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063762,
+              "lon": 129.102856,
+              "alt": 0,
+              "speed": 9.956512,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063847,
+              "lon": 129.10316,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063938,
+              "lon": 129.103463,
+              "alt": 0,
+              "speed": 9.990228,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064039,
+              "lon": 129.10376,
+              "alt": 0,
+              "speed": 9.975158,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064152,
+              "lon": 129.10405,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064283,
+              "lon": 129.10433,
+              "alt": 0,
+              "speed": 9.927431,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064436,
+              "lon": 129.10459,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064621,
+              "lon": 129.104819,
+              "alt": 0,
+              "speed": 9.906503,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.06484,
+              "lon": 129.104992,
+              "alt": 0,
+              "speed": 9.828325,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.065088,
+              "lon": 129.105082,
+              "alt": 0,
+              "speed": 9.835682,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.065347,
+              "lon": 129.105073,
+              "alt": 0,
+              "speed": 9.88686,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.065595,
+              "lon": 129.104975,
+              "alt": 0,
+              "speed": 9.963894,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.065818,
+              "lon": 129.104808,
+              "alt": 0,
+              "speed": 9.956616,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.066011,
+              "lon": 129.104591,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.066171,
+              "lon": 129.104336,
+              "alt": 0,
+              "speed": 9.978106,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.066291,
+              "lon": 129.104052,
+              "alt": 0,
+              "speed": 9.941778,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.066363,
+              "lon": 129.103745,
+              "alt": 0,
+              "speed": 9.9323,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.066372,
+              "lon": 129.103426,
+              "alt": 0,
+              "speed": 9.854427,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.066305,
+              "lon": 129.10312,
+              "alt": 0,
+              "speed": 9.845559,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.066163,
+              "lon": 129.102855,
+              "alt": 0,
+              "speed": 9.909621,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.065967,
+              "lon": 129.102645,
+              "alt": 0,
+              "speed": 9.946249,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.065738,
+              "lon": 129.102488,
+              "alt": 0,
+              "speed": 9.980964,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.065493,
+              "lon": 129.102372,
+              "alt": 0,
+              "speed": 9.92772,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.06524,
+              "lon": 129.102287,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064981,
+              "lon": 129.102223,
+              "alt": 0,
+              "speed": 9.976844,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064721,
+              "lon": 129.102175,
+              "alt": 0,
+              "speed": 9.969495,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064459,
+              "lon": 129.102139,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064196,
+              "lon": 129.102111,
+              "alt": 0,
+              "speed": 9.920717,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063934,
+              "lon": 129.102089,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.06367,
+              "lon": 129.102069,
+              "alt": 0,
+              "speed": 9.968123,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063407,
+              "lon": 129.10205,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063144,
+              "lon": 129.102031,
+              "alt": 0,
+              "speed": 9.989476,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.062881,
+              "lon": 129.102007,
+              "alt": 0,
+              "speed": 9.947613,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.062619,
+              "lon": 129.101978,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.062357,
+              "lon": 129.10194,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.062096,
+              "lon": 129.10189,
+              "alt": 0,
+              "speed": 9.98633,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.061839,
+              "lon": 129.101824,
+              "alt": 0,
+              "speed": 9.963622,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.061586,
+              "lon": 129.101734,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.061343,
+              "lon": 129.101612,
+              "alt": 0,
+              "speed": 9.891032,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.061119,
+              "lon": 129.101447,
+              "alt": 0,
+              "speed": 9.915283,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.060929,
+              "lon": 129.101228,
+              "alt": 0,
+              "speed": 9.864302,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.0608,
+              "lon": 129.100953,
+              "alt": 0,
+              "speed": 9.840196,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.060746,
+              "lon": 129.100643,
+              "alt": 0,
+              "speed": 9.878762,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.060766,
+              "lon": 129.100326,
+              "alt": 0,
+              "speed": 9.964921,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.060847,
+              "lon": 129.100022,
+              "alt": 0,
+              "speed": 9.995633,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.060975,
+              "lon": 129.099742,
+              "alt": 0,
+              "speed": 9.958314,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.06114,
+              "lon": 129.099493,
+              "alt": 0,
+              "speed": 9.974279,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.061338,
+              "lon": 129.099284,
+              "alt": 0,
+              "speed": 9.957202,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.061565,
+              "lon": 129.099126,
+              "alt": 0,
+              "speed": 9.929677,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.061817,
+              "lon": 129.099041,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [],
+          "formation": {
+            "role": "member",
+            "leaderId": 2101,
+            "predecessorId": 2101,
+            "spacing": 100,
+            "total": 3,
+            "offset": -100
+          },
+          "maxSpeed": 10,
+          "maxSpeedUnit": "knots",
+          "fig8Config": {
+            "oLat": 35.061035,
+            "oLon": 129.09963,
+            "dLat": 35.066086,
+            "dLon": 129.104493,
+            "range": 250
+          },
+          "fig8Loop": true
+        },
+        {
+          "name": "충돌 공격 전 후퇴",
+          "start": 641,
+          "duration": 120,
+          "type": "이동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.061543,
+              "lon": 129.099859,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064231,
+              "lon": 129.096622,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [],
+          "maxSpeed": 10,
+          "maxSpeedUnit": "knots"
+        },
+        {
+          "name": "복귀",
+          "start": 791,
+          "duration": 150,
+          "type": "이동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.064231,
+              "lon": 129.096622,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070958,
+              "lon": 129.097787,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [],
+          "maxSpeed": 10,
+          "maxSpeedUnit": "knots"
+        }
+      ],
+      "platformLen": 14
+    },
+    {
+      "name": "[1편대] 해검S",
+      "side": "friendly",
+      "type": "USV",
+      "platformType": "해검S",
+      "platformId": 1101,
+      "speedUnit": "knots",
+      "weaponStatus": {
+        "consumable": {
+          "sonobuoy": 0,
+          "blueshark": 0,
+          "rcws": 0,
+          "drone": 0,
+          "rcws_ammo": 0
+        },
+        "persistent": {
+          "tass": 0,
+          "eo/ir": 1
+        }
+      },
+      "sensorRanges": {
+        "radar": 15000,
+        "tass": 1200,
+        "sonobuoy": 300,
+        "rcws": 2000
+      },
+      "wps": [
+        {
+          "name": "NLL 근방 이동",
+          "start": 0,
+          "duration": 202,
+          "type": "이동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.071113,
+              "lon": 129.098215,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.061898,
+              "lon": 129.100134,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [],
+          "maxSpeed": 10,
+          "maxSpeedUnit": "knots"
+        },
+        {
+          "name": "WP-07-F3",
+          "start": 266,
+          "duration": 375,
+          "type": "8자기동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.061065,
+              "lon": 129.099591,
+              "alt": 0,
+              "speed": 9.996287,
+              "speedUnit": "knots",
+              "_formBarrier": true,
+              "_formTotal": 3
+            },
+            {
+              "lat": 35.06125,
+              "lon": 129.099363,
+              "alt": 0,
+              "speed": 9.926852,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.061466,
+              "lon": 129.099182,
+              "alt": 0,
+              "speed": 9.917845,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.061708,
+              "lon": 129.099062,
+              "alt": 0,
+              "speed": 9.927591,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.061968,
+              "lon": 129.099029,
+              "alt": 0,
+              "speed": 9.871371,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.062223,
+              "lon": 129.099095,
+              "alt": 0,
+              "speed": 9.913511,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.062451,
+              "lon": 129.099251,
+              "alt": 0,
+              "speed": 9.967609,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.062643,
+              "lon": 129.09947,
+              "alt": 0,
+              "speed": 9.961742,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.062803,
+              "lon": 129.099725,
+              "alt": 0,
+              "speed": 9.994055,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.062939,
+              "lon": 129.100001,
+              "alt": 0,
+              "speed": 9.973874,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063056,
+              "lon": 129.100289,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063159,
+              "lon": 129.100585,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063253,
+              "lon": 129.100887,
+              "alt": 0,
+              "speed": 9.987571,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063339,
+              "lon": 129.101191,
+              "alt": 0,
+              "speed": 9.95751,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063419,
+              "lon": 129.101497,
+              "alt": 0,
+              "speed": 9.988678,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063497,
+              "lon": 129.101804,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063573,
+              "lon": 129.102113,
+              "alt": 0,
+              "speed": 9.978105,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.06365,
+              "lon": 129.102421,
+              "alt": 0,
+              "speed": 9.996499,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063729,
+              "lon": 129.102728,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063811,
+              "lon": 129.103034,
+              "alt": 0,
+              "speed": 9.968851,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063899,
+              "lon": 129.103337,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063996,
+              "lon": 129.103637,
+              "alt": 0,
+              "speed": 9.999945,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064103,
+              "lon": 129.103931,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064225,
+              "lon": 129.104216,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064368,
+              "lon": 129.104486,
+              "alt": 0,
+              "speed": 9.95589,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064538,
+              "lon": 129.10473,
+              "alt": 0,
+              "speed": 9.94089,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064742,
+              "lon": 129.104931,
+              "alt": 0,
+              "speed": 9.931315,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.06498,
+              "lon": 129.105061,
+              "alt": 0,
+              "speed": 9.885102,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.065239,
+              "lon": 129.105094,
+              "alt": 0,
+              "speed": 9.936011,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.065495,
+              "lon": 129.10503,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.06573,
+              "lon": 129.104888,
+              "alt": 0,
+              "speed": 9.988409,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.065936,
+              "lon": 129.104689,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.06611,
+              "lon": 129.104448,
+              "alt": 0,
+              "speed": 9.982244,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.066248,
+              "lon": 129.104175,
+              "alt": 0,
+              "speed": 9.956151,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.066342,
+              "lon": 129.103876,
+              "alt": 0,
+              "speed": 9.937281,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.06638,
+              "lon": 129.10356,
+              "alt": 0,
+              "speed": 9.880948,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.066346,
+              "lon": 129.103244,
+              "alt": 0,
+              "speed": 9.913542,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.066234,
+              "lon": 129.102956,
+              "alt": 0,
+              "speed": 9.892843,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.066056,
+              "lon": 129.102722,
+              "alt": 0,
+              "speed": 9.937049,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.065837,
+              "lon": 129.102545,
+              "alt": 0,
+              "speed": 9.973463,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.065597,
+              "lon": 129.102414,
+              "alt": 0,
+              "speed": 9.94529,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.065346,
+              "lon": 129.102318,
+              "alt": 0,
+              "speed": 9.943775,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.06509,
+              "lon": 129.102247,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064829,
+              "lon": 129.102193,
+              "alt": 0,
+              "speed": 9.944711,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064568,
+              "lon": 129.102153,
+              "alt": 0,
+              "speed": 9.996945,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064305,
+              "lon": 129.102122,
+              "alt": 0,
+              "speed": 9.974859,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064043,
+              "lon": 129.102097,
+              "alt": 0,
+              "speed": 9.981005,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.06378,
+              "lon": 129.102077,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063516,
+              "lon": 129.102058,
+              "alt": 0,
+              "speed": 9.985549,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.063253,
+              "lon": 129.102039,
+              "alt": 0,
+              "speed": 9.976191,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.06299,
+              "lon": 129.102018,
+              "alt": 0,
+              "speed": 9.995696,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.062728,
+              "lon": 129.101992,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.062465,
+              "lon": 129.101958,
+              "alt": 0,
+              "speed": 9.990966,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.062205,
+              "lon": 129.101914,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.061945,
+              "lon": 129.101855,
+              "alt": 0,
+              "speed": 9.985666,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.06169,
+              "lon": 129.101776,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.061442,
+              "lon": 129.101669,
+              "alt": 0,
+              "speed": 9.952035,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.061208,
+              "lon": 129.101524,
+              "alt": 0,
+              "speed": 9.952297,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.061,
+              "lon": 129.101329,
+              "alt": 0,
+              "speed": 9.917405,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.060841,
+              "lon": 129.101077,
+              "alt": 0,
+              "speed": 9.919723,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.060754,
+              "lon": 129.100777,
+              "alt": 0,
+              "speed": 9.952823,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.060745,
+              "lon": 129.100457,
+              "alt": 0,
+              "speed": 9.99118,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.060804,
+              "lon": 129.100145,
+              "alt": 0,
+              "speed": 9.999587,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.060914,
+              "lon": 129.099854,
+              "alt": 0,
+              "speed": 9.987633,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.061065,
+              "lon": 129.099591,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [],
+          "formation": {
+            "role": "member",
+            "leaderId": 2101,
+            "predecessorId": 1201,
+            "spacing": 100,
+            "total": 3,
+            "offset": -200
+          },
+          "maxSpeed": 10,
+          "maxSpeedUnit": "knots",
+          "fig8Config": {
+            "oLat": 35.061035,
+            "oLon": 129.09963,
+            "dLat": 35.066086,
+            "dLon": 129.104493,
+            "range": 250
+          },
+          "fig8Loop": true
+        },
+        {
+          "name": "충돌 공격 전 후퇴",
+          "start": 641,
+          "duration": 120,
+          "type": "이동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.061898,
+              "lon": 129.100134,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.064591,
+              "lon": 129.096883,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [],
+          "maxSpeed": 10,
+          "maxSpeedUnit": "knots"
+        },
+        {
+          "name": "복귀",
+          "start": 791,
+          "duration": 150,
+          "type": "이동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.064591,
+              "lon": 129.096883,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071113,
+              "lon": 129.098215,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [],
+          "maxSpeed": 10,
+          "maxSpeedUnit": "knots"
+        }
+      ],
+      "platformLen": 6.6
+    },
+    {
+      "name": "[2편대] 전투용 USV",
+      "side": "friendly",
+      "type": "USV",
+      "platformType": "전투용USV",
+      "platformId": 2102,
+      "speedUnit": "knots",
+      "weaponStatus": {
+        "consumable": {
+          "sonobuoy": 0,
+          "blueshark": 0,
+          "rcws": 1,
+          "drone": 0,
+          "rcws_ammo": 700
+        },
+        "persistent": {
+          "tass": 1,
+          "eo/ir": 1
+        }
+      },
+      "sensorRanges": {
+        "radar": 15000,
+        "tass": 1200,
+        "sonobuoy": 300,
+        "rcws": 2000
+      },
+      "wps": [
+        {
+          "name": "NLL 근방 이동",
+          "start": 266,
+          "duration": 150,
+          "type": "이동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.071192,
+              "lon": 129.099061,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070881,
+              "lon": 129.107527,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [],
+          "maxSpeed": 15,
+          "maxSpeedUnit": "knots"
+        },
+        {
+          "name": "WP-06-F1",
+          "start": 416,
+          "duration": 200,
+          "type": "8자기동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.069378,
+              "lon": 129.105986,
+              "alt": 0,
+              "speed": 9.986914,
+              "speedUnit": "knots",
+              "_formBarrier": true,
+              "_formTotal": 3
+            },
+            {
+              "lat": 35.069221,
+              "lon": 129.105733,
+              "alt": 0,
+              "speed": 9.988653,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.06904,
+              "lon": 129.105506,
+              "alt": 0,
+              "speed": 9.943652,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.068829,
+              "lon": 129.105323,
+              "alt": 0,
+              "speed": 9.97708,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.068586,
+              "lon": 129.105212,
+              "alt": 0,
+              "speed": 9.944519,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.068328,
+              "lon": 129.1052,
+              "alt": 0,
+              "speed": 9.984637,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.068079,
+              "lon": 129.105288,
+              "alt": 0,
+              "speed": 9.953313,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067857,
+              "lon": 129.105451,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067666,
+              "lon": 129.105666,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067509,
+              "lon": 129.105918,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067387,
+              "lon": 129.106198,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067307,
+              "lon": 129.1065,
+              "alt": 0,
+              "speed": 9.993229,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067279,
+              "lon": 129.106814,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067319,
+              "lon": 129.107127,
+              "alt": 0,
+              "speed": 9.988323,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067436,
+              "lon": 129.107409,
+              "alt": 0,
+              "speed": 9.943212,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067619,
+              "lon": 129.107631,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067844,
+              "lon": 129.107789,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.068089,
+              "lon": 129.107895,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.068343,
+              "lon": 129.107963,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.0686,
+              "lon": 129.108003,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.068859,
+              "lon": 129.108024,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069119,
+              "lon": 129.108031,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069379,
+              "lon": 129.108028,
+              "alt": 0,
+              "speed": 9.979102,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069638,
+              "lon": 129.108019,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069898,
+              "lon": 129.108005,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070158,
+              "lon": 129.107989,
+              "alt": 0,
+              "speed": 9.979302,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070417,
+              "lon": 129.107973,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070677,
+              "lon": 129.107959,
+              "alt": 0,
+              "speed": 9.952919,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070936,
+              "lon": 129.10795,
+              "alt": 0,
+              "speed": 9.999621,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071196,
+              "lon": 129.107947,
+              "alt": 0,
+              "speed": 9.992697,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071456,
+              "lon": 129.107954,
+              "alt": 0,
+              "speed": 9.973735,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071715,
+              "lon": 129.107975,
+              "alt": 0,
+              "speed": 9.951842,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071972,
+              "lon": 129.108015,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072226,
+              "lon": 129.108083,
+              "alt": 0,
+              "speed": 9.98666,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072471,
+              "lon": 129.108189,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072696,
+              "lon": 129.108347,
+              "alt": 0,
+              "speed": 9.917847,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072879,
+              "lon": 129.108569,
+              "alt": 0,
+              "speed": 9.94901,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072996,
+              "lon": 129.108851,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.073036,
+              "lon": 129.109164,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.073008,
+              "lon": 129.109479,
+              "alt": 0,
+              "speed": 9.947288,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072928,
+              "lon": 129.10978,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072806,
+              "lon": 129.11006,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072649,
+              "lon": 129.110312,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072458,
+              "lon": 129.110528,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072236,
+              "lon": 129.110691,
+              "alt": 0,
+              "speed": 9.984828,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071987,
+              "lon": 129.110778,
+              "alt": 0,
+              "speed": 9.974465,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071729,
+              "lon": 129.110766,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071486,
+              "lon": 129.110655,
+              "alt": 0,
+              "speed": 9.967439,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071275,
+              "lon": 129.110472,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071094,
+              "lon": 129.110245,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070937,
+              "lon": 129.109992,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070799,
+              "lon": 129.109723,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070675,
+              "lon": 129.109444,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070561,
+              "lon": 129.109159,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070454,
+              "lon": 129.108869,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070353,
+              "lon": 129.108577,
+              "alt": 0,
+              "speed": 9.983689,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070254,
+              "lon": 129.108284,
+              "alt": 0,
+              "speed": 9.996008,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.07015750000001,
+              "lon": 129.10798900000003,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070061,
+              "lon": 129.107694,
+              "alt": 0,
+              "speed": 9.984417,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069962,
+              "lon": 129.107401,
+              "alt": 0,
+              "speed": 9.981896,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069861,
+              "lon": 129.107109,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069754,
+              "lon": 129.106819,
+              "alt": 0,
+              "speed": 9.992695,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.06964,
+              "lon": 129.106534,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069516,
+              "lon": 129.106255,
+              "alt": 0,
+              "speed": 9.998174,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069378,
+              "lon": 129.105986,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [],
+          "formation": {
+            "role": "leader",
+            "leaderId": 2102,
+            "predecessorId": null,
+            "spacing": 100,
+            "total": 3,
+            "offset": 0
+          },
+          "maxSpeed": 10,
+          "maxSpeedUnit": "knots",
+          "fig8Config": {
+            "oLat": 35.072806,
+            "oLon": 129.11006,
+            "dLat": 35.067509,
+            "dLon": 129.105918,
+            "range": 250
+          },
+          "fig8Loop": true
+        },
+        {
+          "name": "1차 경고 사격",
+          "start": 530,
+          "duration": 15,
+          "type": "타격",
+          "concurrent": true,
+          "waypoints": [
+            {
+              "lat": 35.069916,
+              "lon": 129.108452,
+              "alt": 0,
+              "speed": 15,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [
+            {
+              "category": "weapon",
+              "weaponKey": "rcws",
+              "weaponType": 2,
+              "key": "rcws",
+              "type": 2,
+              "label": "RCWS 사격",
+              "icon": "🟠",
+              "color": "#f97316",
+              "fields": [
+                "target_lat",
+                "target_lon",
+                "ref_track_id",
+                "rounds_per_burst",
+                "burst_count",
+                "burst_interval"
+              ],
+              "params": {
+                "target_lat": 35.0687,
+                "target_lon": 129.11,
+                "ref_track_id": 0,
+                "rounds_per_burst": 5,
+                "burst_count": 3,
+                "burst_interval": 2,
+                "_targetName": null
+              }
+            }
+          ]
+        },
+        {
+          "name": "2차 경고 사격",
+          "start": 550,
+          "duration": 15,
+          "type": "타격",
+          "concurrent": true,
+          "waypoints": [
+            {
+              "lat": 35.069916,
+              "lon": 129.108452,
+              "alt": 0,
+              "speed": 15,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [
+            {
+              "category": "weapon",
+              "weaponKey": "rcws",
+              "weaponType": 2,
+              "key": "rcws",
+              "type": 2,
+              "label": "RCWS 사격",
+              "icon": "🟠",
+              "color": "#f97316",
+              "fields": [
+                "target_lat",
+                "target_lon",
+                "ref_track_id",
+                "rounds_per_burst",
+                "burst_count",
+                "burst_interval"
+              ],
+              "params": {
+                "target_lat": 35.0687,
+                "target_lon": 129.11,
+                "ref_track_id": 0,
+                "rounds_per_burst": 5,
+                "burst_count": 3,
+                "burst_interval": 2,
+                "_targetName": null
+              }
+            }
+          ]
+        },
+        {
+          "name": "대응/격파 사격",
+          "start": 575,
+          "duration": 40,
+          "type": "타격",
+          "concurrent": true,
+          "waypoints": [
+            {
+              "lat": 35.069916,
+              "lon": 129.108452,
+              "alt": 0,
+              "speed": 15,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [
+            {
+              "category": "weapon",
+              "weaponKey": "rcws",
+              "weaponType": 2,
+              "key": "rcws",
+              "type": 2,
+              "label": "RCWS 사격",
+              "icon": "🟠",
+              "color": "#f97316",
+              "fields": [
+                "target_lat",
+                "target_lon",
+                "ref_track_id",
+                "rounds_per_burst",
+                "burst_count",
+                "burst_interval"
+              ],
+              "params": {
+                "target_lat": 35.066189,
+                "target_lon": 129.138792,
+                "ref_track_id": 9003,
+                "rounds_per_burst": 5,
+                "burst_count": 3,
+                "burst_interval": 2,
+                "_targetName": "적 수상함2"
+              }
+            }
+          ]
+        },
+        {
+          "name": "충돌 공격 전 후퇴",
+          "start": 616,
+          "duration": 61,
+          "type": "이동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.071383,
+              "lon": 129.107385,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071912,
+              "lon": 129.104006,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [],
+          "maxSpeed": 15,
+          "maxSpeedUnit": "knots"
+        }
+      ],
+      "platformLen": 40
+    },
+    {
+      "name": "[2편대] 해검5",
+      "side": "friendly",
+      "type": "USV",
+      "platformType": "해검5",
+      "platformId": 1301,
+      "speedUnit": "knots",
+      "weaponStatus": {
+        "consumable": {
+          "sonobuoy": 3,
+          "blueshark": 0,
+          "rcws": 0,
+          "drone": 0,
+          "rcws_ammo": 0
+        },
+        "persistent": {
+          "tass": 0,
+          "eo/ir": 1
+        }
+      },
+      "sensorRanges": {
+        "radar": 15000,
+        "tass": 1200,
+        "sonobuoy": 300,
+        "rcws": 2000
+      },
+      "wps": [
+        {
+          "name": "NLL 근방 이동",
+          "start": 266,
+          "duration": 147,
+          "type": "이동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.071419,
+              "lon": 129.099099,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071384,
+              "lon": 129.107384,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [],
+          "maxSpeed": 10,
+          "maxSpeedUnit": "knots"
+        },
+        {
+          "name": "WP-06-F2",
+          "start": 416,
+          "duration": 200,
+          "type": "8자기동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.069804,
+              "lon": 129.106954,
+              "alt": 0,
+              "speed": 9.984715,
+              "speedUnit": "knots",
+              "_formBarrier": true,
+              "_formTotal": 3
+            },
+            {
+              "lat": 35.069693,
+              "lon": 129.106667,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069574,
+              "lon": 129.106385,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069442,
+              "lon": 129.106111,
+              "alt": 0,
+              "speed": 9.968531,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069294,
+              "lon": 129.105851,
+              "alt": 0,
+              "speed": 9.982,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069124,
+              "lon": 129.105612,
+              "alt": 0,
+              "speed": 9.947266,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.068927,
+              "lon": 129.105408,
+              "alt": 0,
+              "speed": 9.863304,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.068699,
+              "lon": 129.105264,
+              "alt": 0,
+              "speed": 9.836087,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.068448,
+              "lon": 129.105206,
+              "alt": 0,
+              "speed": 9.845834,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.068195,
+              "lon": 129.105247,
+              "alt": 0,
+              "speed": 9.910262,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.06796,
+              "lon": 129.105375,
+              "alt": 0,
+              "speed": 9.923039,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067755,
+              "lon": 129.105566,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067582,
+              "lon": 129.105801,
+              "alt": 0,
+              "speed": 9.941311,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067444,
+              "lon": 129.106067,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067344,
+              "lon": 129.106359,
+              "alt": 0,
+              "speed": 9.955374,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067292,
+              "lon": 129.106668,
+              "alt": 0,
+              "speed": 9.876385,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.0673,
+              "lon": 129.106981,
+              "alt": 0,
+              "speed": 9.858388,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067381,
+              "lon": 129.107278,
+              "alt": 0,
+              "speed": 9.825732,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067534,
+              "lon": 129.107528,
+              "alt": 0,
+              "speed": 9.874777,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067739,
+              "lon": 129.107715,
+              "alt": 0,
+              "speed": 9.98628,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067975,
+              "lon": 129.107846,
+              "alt": 0,
+              "speed": 9.978295,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.068225,
+              "lon": 129.107931,
+              "alt": 0,
+              "speed": 9.948114,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.06848,
+              "lon": 129.107984,
+              "alt": 0,
+              "speed": 9.981453,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.068738,
+              "lon": 129.108014,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.068998,
+              "lon": 129.108028,
+              "alt": 0,
+              "speed": 9.987358,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069258,
+              "lon": 129.108029,
+              "alt": 0,
+              "speed": 9.968363,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069517,
+              "lon": 129.108023,
+              "alt": 0,
+              "speed": 9.996259,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069777,
+              "lon": 129.108012,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070037,
+              "lon": 129.107996,
+              "alt": 0,
+              "speed": 9.973441,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070296,
+              "lon": 129.10798,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070556,
+              "lon": 129.107966,
+              "alt": 0,
+              "speed": 9.959,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070815,
+              "lon": 129.107954,
+              "alt": 0,
+              "speed": 9.98909,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071075,
+              "lon": 129.107948,
+              "alt": 0,
+              "speed": 9.999432,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071335,
+              "lon": 129.107951,
+              "alt": 0,
+              "speed": 9.961581,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071594,
+              "lon": 129.107965,
+              "alt": 0,
+              "speed": 9.989669,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071852,
+              "lon": 129.107996,
+              "alt": 0,
+              "speed": 9.996729,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072108,
+              "lon": 129.108051,
+              "alt": 0,
+              "speed": 9.975087,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072357,
+              "lon": 129.10814,
+              "alt": 0,
+              "speed": 9.954018,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072591,
+              "lon": 129.108273,
+              "alt": 0,
+              "speed": 9.918812,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072794,
+              "lon": 129.108466,
+              "alt": 0,
+              "speed": 9.778076,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072941,
+              "lon": 129.10872,
+              "alt": 0,
+              "speed": 9.839973,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.073017,
+              "lon": 129.109018,
+              "alt": 0,
+              "speed": 9.915646,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.073021,
+              "lon": 129.109332,
+              "alt": 0,
+              "speed": 9.921781,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072965,
+              "lon": 129.10964,
+              "alt": 0,
+              "speed": 9.945181,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072863,
+              "lon": 129.109929,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072722,
+              "lon": 129.110195,
+              "alt": 0,
+              "speed": 9.975725,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072547,
+              "lon": 129.110427,
+              "alt": 0,
+              "speed": 9.972899,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072339,
+              "lon": 129.110615,
+              "alt": 0,
+              "speed": 9.871134,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072103,
+              "lon": 129.110737,
+              "alt": 0,
+              "speed": 9.854678,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071849,
+              "lon": 129.110772,
+              "alt": 0,
+              "speed": 9.83609,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071599,
+              "lon": 129.110707,
+              "alt": 0,
+              "speed": 9.898178,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071373,
+              "lon": 129.110557,
+              "alt": 0,
+              "speed": 9.920608,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071178,
+              "lon": 129.110351,
+              "alt": 0,
+              "speed": 9.979512,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.07101,
+              "lon": 129.11011,
+              "alt": 0,
+              "speed": 9.985667,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070863,
+              "lon": 129.109848,
+              "alt": 0,
+              "speed": 9.990607,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070733,
+              "lon": 129.109574,
+              "alt": 0,
+              "speed": 9.992783,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070614,
+              "lon": 129.109292,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070504,
+              "lon": 129.109004,
+              "alt": 0,
+              "speed": 9.995021,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.0704,
+              "lon": 129.108713,
+              "alt": 0,
+              "speed": 9.970067,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.0703,
+              "lon": 129.108421,
+              "alt": 0,
+              "speed": 9.995795,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070202,
+              "lon": 129.108127,
+              "alt": 0,
+              "speed": 9.979726,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070106,
+              "lon": 129.107832,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070008,
+              "lon": 129.107538,
+              "alt": 0,
+              "speed": 9.999063,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069908,
+              "lon": 129.107245,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069804,
+              "lon": 129.106954,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [],
+          "formation": {
+            "role": "member",
+            "leaderId": 2102,
+            "predecessorId": 2102,
+            "spacing": 100,
+            "total": 3,
+            "offset": -100
+          },
+          "maxSpeed": 10,
+          "maxSpeedUnit": "knots",
+          "fig8Config": {
+            "oLat": 35.072806,
+            "oLon": 129.11006,
+            "dLat": 35.067509,
+            "dLon": 129.105918,
+            "range": 250
+          },
+          "fig8Loop": true
+        },
+        {
+          "name": "충돌 공격 전 후퇴",
+          "start": 616,
+          "duration": 67,
+          "type": "이동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.070878,
+              "lon": 129.107526,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071515,
+              "lon": 129.103834,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [],
+          "maxSpeed": 10,
+          "maxSpeedUnit": "knots"
+        },
+        {
+          "name": "복귀",
+          "start": 840,
+          "duration": 84,
+          "type": "이동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.071515,
+              "lon": 129.103834,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071419,
+              "lon": 129.099099,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [],
+          "maxSpeed": 10,
+          "maxSpeedUnit": "knots"
+        }
+      ],
+      "platformLen": 9.2
+    },
+    {
+      "name": "[2편대] 해검S",
+      "side": "friendly",
+      "type": "USV",
+      "platformType": "해검S",
+      "platformId": 1102,
+      "speedUnit": "knots",
+      "weaponStatus": {
+        "consumable": {
+          "sonobuoy": 0,
+          "blueshark": 0,
+          "rcws": 0,
+          "drone": 0,
+          "rcws_ammo": 0
+        },
+        "persistent": {
+          "tass": 0,
+          "eo/ir": 1
+        }
+      },
+      "sensorRanges": {
+        "radar": 15000,
+        "tass": 1200,
+        "sonobuoy": 300,
+        "rcws": 2000
+      },
+      "wps": [
+        {
+          "name": "NLL 근방 이동",
+          "start": 266,
+          "duration": 147,
+          "type": "이동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.071076,
+              "lon": 129.098801,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070555,
+              "lon": 129.107041,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [],
+          "maxSpeed": 10,
+          "maxSpeedUnit": "knots"
+        },
+        {
+          "name": "WP-06-F3",
+          "start": 416,
+          "duration": 200,
+          "type": "8자기동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.070151,
+              "lon": 129.107969,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots",
+              "_formBarrier": true,
+              "_formTotal": 3
+            },
+            {
+              "lat": 35.070054,
+              "lon": 129.107674,
+              "alt": 0,
+              "speed": 9.990798,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069955,
+              "lon": 129.107381,
+              "alt": 0,
+              "speed": 9.970469,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069854,
+              "lon": 129.107089,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069746,
+              "lon": 129.1068,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069632,
+              "lon": 129.106515,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069507,
+              "lon": 129.106237,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069367,
+              "lon": 129.105969,
+              "alt": 0,
+              "speed": 9.979163,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069209,
+              "lon": 129.105718,
+              "alt": 0,
+              "speed": 9.993291,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069026,
+              "lon": 129.105494,
+              "alt": 0,
+              "speed": 9.957461,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.068813,
+              "lon": 129.105315,
+              "alt": 0,
+              "speed": 9.946746,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.068569,
+              "lon": 129.105211,
+              "alt": 0,
+              "speed": 9.974274,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.068311,
+              "lon": 129.105206,
+              "alt": 0,
+              "speed": 9.968152,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.068064,
+              "lon": 129.105299,
+              "alt": 0,
+              "speed": 9.997285,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067844,
+              "lon": 129.105466,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067655,
+              "lon": 129.105683,
+              "alt": 0,
+              "speed": 9.96926,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067501,
+              "lon": 129.105937,
+              "alt": 0,
+              "speed": 9.963286,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067382,
+              "lon": 129.106218,
+              "alt": 0,
+              "speed": 9.986555,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067305,
+              "lon": 129.106521,
+              "alt": 0,
+              "speed": 9.959529,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067282,
+              "lon": 129.106835,
+              "alt": 0,
+              "speed": 9.958513,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067327,
+              "lon": 129.107146,
+              "alt": 0,
+              "speed": 9.909445,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067448,
+              "lon": 129.107424,
+              "alt": 0,
+              "speed": 9.912791,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067634,
+              "lon": 129.107642,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067861,
+              "lon": 129.107796,
+              "alt": 0,
+              "speed": 9.9659,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.068106,
+              "lon": 129.1079,
+              "alt": 0,
+              "speed": 9.975042,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.06836,
+              "lon": 129.107966,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.068618,
+              "lon": 129.108004,
+              "alt": 0,
+              "speed": 9.971704,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.068877,
+              "lon": 129.108024,
+              "alt": 0,
+              "speed": 9.989733,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069137,
+              "lon": 129.108031,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069397,
+              "lon": 129.108027,
+              "alt": 0,
+              "speed": 9.955871,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069656,
+              "lon": 129.108018,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069916,
+              "lon": 129.108004,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070176,
+              "lon": 129.107988,
+              "alt": 0,
+              "speed": 9.973252,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070435,
+              "lon": 129.107972,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070695,
+              "lon": 129.107958,
+              "alt": 0,
+              "speed": 9.983436,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070954,
+              "lon": 129.10795,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071214,
+              "lon": 129.107947,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071474,
+              "lon": 129.107955,
+              "alt": 0,
+              "speed": 9.977445,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071732,
+              "lon": 129.107978,
+              "alt": 0,
+              "speed": 9.998815,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071989,
+              "lon": 129.10802,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072243,
+              "lon": 129.10809,
+              "alt": 0,
+              "speed": 9.98188,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072486,
+              "lon": 129.1082,
+              "alt": 0,
+              "speed": 9.975952,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072708,
+              "lon": 129.108362,
+              "alt": 0,
+              "speed": 9.890141,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072887,
+              "lon": 129.108588,
+              "alt": 0,
+              "speed": 9.961727,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072999,
+              "lon": 129.108872,
+              "alt": 0,
+              "speed": 9.968058,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.073034,
+              "lon": 129.109185,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.073003,
+              "lon": 129.109499,
+              "alt": 0,
+              "speed": 9.990315,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.07292,
+              "lon": 129.109799,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072795,
+              "lon": 129.110077,
+              "alt": 0,
+              "speed": 9.990099,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072636,
+              "lon": 129.110327,
+              "alt": 0,
+              "speed": 9.987245,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072443,
+              "lon": 129.110539,
+              "alt": 0,
+              "speed": 9.954144,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.072219,
+              "lon": 129.110697,
+              "alt": 0,
+              "speed": 9.908474,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.07197,
+              "lon": 129.110777,
+              "alt": 0,
+              "speed": 9.916999,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071713,
+              "lon": 129.110758,
+              "alt": 0,
+              "speed": 9.937511,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071472,
+              "lon": 129.110643,
+              "alt": 0,
+              "speed": 9.965686,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071263,
+              "lon": 129.110457,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071083,
+              "lon": 129.110228,
+              "alt": 0,
+              "speed": 9.968919,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070928,
+              "lon": 129.109974,
+              "alt": 0,
+              "speed": 9.999531,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070791,
+              "lon": 129.109704,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070667,
+              "lon": 129.109425,
+              "alt": 0,
+              "speed": 9.999968,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070554,
+              "lon": 129.109139,
+              "alt": 0,
+              "speed": 9.999898,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070447,
+              "lon": 129.108849,
+              "alt": 0,
+              "speed": 9.985993,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070346,
+              "lon": 129.108557,
+              "alt": 0,
+              "speed": 9.984279,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070247,
+              "lon": 129.108264,
+              "alt": 0,
+              "speed": 9.997723,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.070151,
+              "lon": 129.107969,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [],
+          "formation": {
+            "role": "member",
+            "leaderId": 2102,
+            "predecessorId": 1301,
+            "spacing": 100,
+            "total": 3,
+            "offset": -200
+          },
+          "maxSpeed": 10,
+          "maxSpeedUnit": "knots",
+          "fig8Config": {
+            "oLat": 35.072806,
+            "oLon": 129.11006,
+            "dLat": 35.067509,
+            "dLon": 129.105918,
+            "range": 250
+          },
+          "fig8Loop": true
+        },
+        {
+          "name": "충돌 공격 전 후퇴",
+          "start": 616,
+          "duration": 63,
+          "type": "이동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.070554,
+              "lon": 129.107043,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071138,
+              "lon": 129.103548,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [],
+          "maxSpeed": 10,
+          "maxSpeedUnit": "knots"
+        },
+        {
+          "name": "복귀",
+          "start": 840,
+          "duration": 84,
+          "type": "이동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.071138,
+              "lon": 129.103548,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.071076,
+              "lon": 129.098801,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [],
+          "maxSpeed": 10,
+          "maxSpeedUnit": "knots"
+        }
+      ],
+      "platformLen": 6.6
+    },
+    {
+      "name": "적 수상함1",
+      "side": "enemy",
+      "type": "ENEMY_SHIP",
+      "platformType": "적수상함",
+      "platformId": 9002,
+      "speedUnit": "knots",
+      "weaponStatus": {
+        "consumable": {},
+        "persistent": {}
+      },
+      "sensorRanges": {
+        "radar": 0,
+        "tass": 0,
+        "sonobuoy": 0,
+        "rcws": 0
+      },
+      "wps": [
+        {
+          "name": "NLL 근방 이동",
+          "start": 266,
+          "duration": 299,
+          "type": "이동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.045927,
+              "lon": 129.126671,
+              "alt": 0,
+              "speed": 15,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.057912,
+              "lon": 129.10604,
+              "alt": 0,
+              "speed": 15,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": []
+        },
+        {
+          "name": "NLL 침범1",
+          "start": 565,
+          "duration": 34,
+          "type": "이동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.057912,
+              "lon": 129.10604,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.058978,
+              "lon": 129.104605,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [],
+          "formation": null
+        },
+        {
+          "name": "NLL 침범2",
+          "start": 599,
+          "duration": 42,
+          "type": "이동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.058978,
+              "lon": 129.104605,
+              "alt": 0,
+              "speed": 6,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.059826,
+              "lon": 129.103641,
+              "alt": 0,
+              "speed": 6,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [],
+          "formation": null
+        },
+        {
+          "name": "자력 이동 불가 상태",
+          "start": 641,
+          "duration": 130,
+          "type": "대기",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.059826,
+              "lon": 129.103641,
+              "alt": 0,
+              "speed": 0,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": []
+        },
+        {
+          "name": "침몰",
+          "start": 771,
+          "duration": 60,
+          "type": "기타",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.059826,
+              "lon": 129.103641,
+              "alt": 0,
+              "speed": 0,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": []
+        }
+      ],
+      "platformLen": 95
+    },
+    {
+      "name": "적 수상함2",
+      "side": "enemy",
+      "type": "ENEMY_SHIP",
+      "platformType": "적수상함",
+      "platformId": 9003,
+      "speedUnit": "knots",
+      "weaponStatus": {
+        "consumable": {},
+        "persistent": {}
+      },
+      "sensorRanges": {
+        "radar": 0,
+        "tass": 0,
+        "sonobuoy": 0,
+        "rcws": 0
+      },
+      "wps": [
+        {
+          "name": "NLL 근방 이동",
+          "start": 266,
+          "duration": 300,
+          "type": "이동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.066189,
+              "lon": 129.138792,
+              "alt": 0,
+              "speed": 15,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069412,
+              "lon": 129.11371,
+              "alt": 0,
+              "speed": 15,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [],
+          "formation": null
+        },
+        {
+          "name": "NLL 침범1",
+          "start": 566,
+          "duration": 20,
+          "type": "이동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.069412,
+              "lon": 129.11371,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069611,
+              "lon": 129.112592,
+              "alt": 0,
+              "speed": 10,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [],
+          "formation": null
+        },
+        {
+          "name": "NLL 침범2",
+          "start": 586,
+          "duration": 35,
+          "type": "이동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.069611,
+              "lon": 129.112592,
+              "alt": 0,
+              "speed": 6,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.069964,
+              "lon": 129.111485,
+              "alt": 0,
+              "speed": 6,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [],
+          "formation": null
+        },
+        {
+          "name": "자력 이동 불가 상태",
+          "start": 621,
+          "duration": 90,
+          "type": "대기",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.069964,
+              "lon": 129.111485,
+              "alt": 0,
+              "speed": 0,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": []
+        },
+        {
+          "name": "침몰",
+          "start": 711,
+          "duration": 60,
+          "type": "기타",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.069964,
+              "lon": 129.111485,
+              "alt": 0,
+              "speed": 0,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": [],
+          "formation": null
+        }
+      ],
+      "platformLen": 95
+    },
+    {
+      "name": "자폭용 USV1",
+      "side": "friendly",
+      "type": "USV",
+      "platformType": "자폭용USV",
+      "platformId": 2201,
+      "speedUnit": "knots",
+      "weaponStatus": {
+        "consumable": {
+          "sonobuoy": 0,
+          "blueshark": 0,
+          "rcws": 0,
+          "drone": 0,
+          "rcws_ammo": 0
+        },
+        "persistent": {
+          "tass": 0,
+          "eo/ir": 1
+        }
+      },
+      "sensorRanges": {
+        "radar": 15000,
+        "tass": 1200,
+        "sonobuoy": 300,
+        "rcws": 2000
+      },
+      "wps": [
+        {
+          "name": "충돌 공격 준비",
+          "start": 575,
+          "duration": 89,
+          "type": "이동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.066049,
+              "lon": 129.086307,
+              "alt": 0,
+              "speed": 20,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.068367,
+              "lon": 129.09595,
+              "alt": 0,
+              "speed": 20,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": []
+        },
+        {
+          "name": "충돌 공격",
+          "start": 737,
+          "duration": 115,
+          "type": "충돌공격",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.045927,
+              "lon": 129.126671,
+              "alt": 0,
+              "speed": 20,
+              "speedUnit": "knots",
+              "_trackId": 9002,
+              "_targetName": "적 수상함1"
+            }
+          ],
+          "actions": [],
+          "collisionTarget": {
+            "id": 9002,
+            "name": "적 수상함1"
+          }
+        }
+      ],
+      "platformLen": 6.6
+    },
+    {
+      "name": "자폭용 USV2",
+      "side": "friendly",
+      "type": "USV",
+      "platformType": "자폭용USV",
+      "platformId": 2202,
+      "speedUnit": "knots",
+      "weaponStatus": {
+        "consumable": {
+          "sonobuoy": 0,
+          "blueshark": 0,
+          "rcws": 0,
+          "drone": 0,
+          "rcws_ammo": 0
+        },
+        "persistent": {
+          "tass": 0,
+          "eo/ir": 1
+        }
+      },
+      "sensorRanges": {
+        "radar": 15000,
+        "tass": 1200,
+        "sonobuoy": 300,
+        "rcws": 2000
+      },
+      "wps": [
+        {
+          "name": "충돌 공격 준비",
+          "start": 575,
+          "duration": 89,
+          "type": "이동",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.065294,
+              "lon": 129.086486,
+              "alt": 0,
+              "speed": 20,
+              "speedUnit": "knots"
+            },
+            {
+              "lat": 35.067661,
+              "lon": 129.096064,
+              "alt": 0,
+              "speed": 20,
+              "speedUnit": "knots"
+            }
+          ],
+          "actions": []
+        },
+        {
+          "name": "충돌 공격",
+          "start": 737,
+          "duration": 107,
+          "type": "충돌공격",
+          "concurrent": false,
+          "waypoints": [
+            {
+              "lat": 35.045927,
+              "lon": 129.126671,
+              "alt": 0,
+              "speed": 20,
+              "speedUnit": "knots",
+              "_trackId": 9002,
+              "_targetName": "적 수상함1"
+            }
+          ],
+          "actions": [],
+          "collisionTarget": {
+            "id": 9002,
+            "name": "적 수상함1"
+          }
+        }
+      ],
+      "platformLen": 6.6
+    }
+  ]
+}

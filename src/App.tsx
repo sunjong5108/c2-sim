@@ -1,87 +1,85 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 
 // ═══ Engine Imports ═══
-import SimEngine from "./engine/SimEngine.js";
+import SimEngine from "./engine/SimEngine";
 import {
-  KNOTS_TO_MS, MS_TO_KNOTS, EARTH_R, WP_ARRIVE_M,
-  RADAR_RANGE, SONOBUOY_RANGE, TASS_RANGE, TASS_OFFSET,
   PLAT_REG, ENEMY_TYPES, WPN_ACTS, SEN_ACTS,
-  WP_TYPES, WP_TYPES_ENEMY, WP_COLORS, FIELD_LABELS, UNIT_COLORS,
-  defaultWeaponStatus
-} from "./engine/constants.js";
-import { hav, brg, mvPt, sMs, mDs, hms, ela, toRad, toDeg, cLanes, dlCSV } from "./engine/geo.js";
-import { genFig8, genEllipse, insertTurnArc, pathArcLen } from "./engine/patterns.js";
-import { formOff, minPairwiseDistance, offsetRoute, syncFormAll } from "./engine/formations.js";
-import { S } from "./styles/theme.js";
-import AB from "./components/ActionButton.jsx";
-import ScTab from "./components/ScenarioTab.jsx";
-import COPTab from "./components/COPTab.jsx";
-import ExpTab from "./components/CSVExport.jsx";
-import { F, WF, MT, Mod } from "./components/UIHelpers.jsx";
+  WP_TYPES, WP_TYPES_ENEMY, UNIT_COLORS,
+  defaultWeaponStatus,
+} from "./engine/constants";
+import { hav, brg, mvPt, sMs } from "./engine/geo";
+import { genFig8, genEllipse, insertTurnArc, pathArcLen } from "./engine/patterns";
+import { formOff, minPairwiseDistance, syncFormAll } from "./engine/formations";
+import { S } from "./styles/theme";
+import AB from "./components/ActionButton";
+import ScTab from "./components/ScenarioTab";
+import COPTab from "./components/COPTab";
+import ExpTab from "./components/CSVExport";
+import { F, WF, Mod } from "./components/UIHelpers";
 
+import type { Unit } from "./types/unit";
+import type { SpeedUnit, UnitSide, PlatformCategory } from "./types/platform";
+import type { Waypoint, WaypointType, WaypointGroup, CollisionTarget } from "./types/waypoint";
+import type { ActionConfig } from "./types/action";
+import type { Snapshot } from "./types/engine";
 
-// Backward compatibility aliases
 const UC = UNIT_COLORS;
-const FL = FIELD_LABELS;
 const defWS = defaultWeaponStatus;
 
 
-function mkEng() { return new SimEngine(); }
+function mkEng(): SimEngine { return new SimEngine(); }
+
+interface EditWpRef { ui: number; wi: number }
 
 
 // ═══ Main App ═══
 export default function App(){
-  const[tab,setTab]=useState("scenario");
-  const[units,setUnits]=useState([]);const[sel,setSel]=useState(-1);
+  const[tab,setTab]=useState<"scenario"|"cop"|"export">("scenario");
+  const[units,setUnits]=useState<Unit[]>([]);const[sel,setSel]=useState(-1);
   const[scStart,setScStart]=useState("06:00");
   const[durM,setDurM]=useState(120);const[durS,setDurS]=useState(0);const[tick,setTick]=useState(300);
   const[showAU,setShowAU]=useState(false);const[showAW,setShowAW]=useState(false);
-  const[editUnitIdx,setEditUnitIdx]=useState(-1); // -1=신규, >=0=편집
-  const[editWP,setEditWP]=useState(null); // null=신규, {ui,wi}=편집
+  const[editUnitIdx,setEditUnitIdx]=useState(-1);
+  const[editWP,setEditWP]=useState<EditWpRef|null>(null);
 
   // Add unit
-  const[nuN,setNuN]=useState("");const[nuSide,setNuSide]=useState("friendly");
+  const[nuN,setNuN]=useState("");const[nuSide,setNuSide]=useState<UnitSide>("friendly");
   const[nuPT,setNuPT]=useState("유인구축함");const[nuET,setNuET]=useState("적수상함");
   const[nuS,setNuS]=useState(4);const[nuB,setNuB]=useState(2);const[nuR,setNuR]=useState(1);const[nuD,setNuD]=useState(2);const[nuT,setNuT]=useState(1);const[nuE,setNuE]=useState(1);
-  const[nuRA,setNuRA]=useState(200); // RCWS 탄약수
-  const[nuLen,setNuLen]=useState(150); // 플랫폼 길이 (m)
-  const[nuTR,setNuTR]=useState(2); // 최대 선회율 (°/s)
+  const[nuRA,setNuRA]=useState(200);
+  const[nuLen,setNuLen]=useState(150);
+  const[nuTR,setNuTR]=useState(2);
   const[nuRadar,setNuRadar]=useState(15000);const[nuTassR,setNuTassR]=useState(8000);const[nuSonoR,setNuSonoR]=useState(5000);const[nuRcwsR,setNuRcwsR]=useState(2000);
 
   // Add WP
   const[wU,setWU]=useState(0);const[wN,setWN]=useState("WP-01");
   const[wSM,setWSM]=useState(0);const[wSS,setWSS]=useState(0);const[wDM,setWDM]=useState(10);const[wDS,setWDS]=useState(0);
-  const[wTy,setWTy]=useState("이동");
-  const[wPts,setWPts]=useState([{lat:35.1,lon:129.0,alt:0,speed:15,speedUnit:"knots"}]); // 경유점 배열
-  const[wActs,setWActs]=useState([]);
-  // 소노부이투하 WP 전용 파라미터
+  const[wTy,setWTy]=useState<WaypointType>("이동");
+  const[wPts,setWPts]=useState<Waypoint[]>([{lat:35.1,lon:129.0,alt:0,speed:15,speedUnit:"knots"}]);
+  const[wActs,setWActs]=useState<ActionConfig[]>([]);
   const[wSbDepth,setWsbDepth]=useState(50);
   const[wSbDur,setWsbDur]=useState(300);
-  // 8자기동 WP 전용 파라미터
   const[f8OLat,setF8OLat]=useState(35.1);const[f8OLon,setF8OLon]=useState(129.0);
   const[f8DLat,setF8DLat]=useState(35.15);const[f8DLon,setF8DLon]=useState(129.0);
-  const[f8Range,setF8Range]=useState(2000); // lateral range in meters
-  const[f8Spd,setF8Spd]=useState(15);const[f8SpdU,setF8SpdU]=useState("knots");
-  // WP 동시 실행
+  const[f8Range,setF8Range]=useState(2000);
+  const[f8Spd,setF8Spd]=useState(15);const[f8SpdU,setF8SpdU]=useState<SpeedUnit>("knots");
   const[wConc,setWConc]=useState(false);
-  // 편대 기동 (8자/타원 전용)
-  const[wFormUnits,setWFormUnits]=useState([]); // 편대원 유닛 인덱스 배열
-  const[wFormSpacing,setWFormSpacing]=useState(200); // 간격 (m)
-  const[wMaxSpd,setWMaxSpd]=useState(0); // 최대 속력 (0=제한 없음)
-  const[wMaxSpdU,setWMaxSpdU]=useState("knots");
-  // 충돌 공격 표적
-  const[wCollTgt,setWCollTgt]=useState(null); // {id,name}
+  const[wFormUnits,setWFormUnits]=useState<number[]>([]);
+  const[wFormSpacing,setWFormSpacing]=useState(200);
+  const[wMaxSpd,setWMaxSpd]=useState(0);
+  const[wMaxSpdU,setWMaxSpdU]=useState<SpeedUnit>("knots");
+  const[wCollTgt,setWCollTgt]=useState<CollisionTarget|null>(null);
 
-  const eng=useRef(mkEng());
-  const[ss,setSS]=useState(null);const[sRun,setSRun]=useState(false);const[sSp,setSSp]=useState(1);const sIv=useRef(null);
+  const eng=useRef<SimEngine>(mkEng());
+  const[ss,setSS]=useState<Snapshot|null>(null);const[sRun,setSRun]=useState(false);const[sSp,setSSp]=useState(1);const sIv=useRef<ReturnType<typeof setInterval>|null>(null);
   const totSec=useMemo(()=>Math.max(durM*60+durS,10),[durM,durS]);
 
-  const syncDef=useCallback(pk=>{const r=PLAT_REG.find(x=>x.key===pk);const w=defWS(pk);setNuS(w.consumable.sonobuoy);setNuB(w.consumable.blueshark);setNuR(w.consumable.rcws);setNuD(w.consumable.drone);setNuT(w.persistent.tass);setNuE(w.persistent["eo/ir"]);setNuRA(w.consumable.rcws_ammo||0);
-    const sr=r?.sr||{};setNuRadar(sr.radar??15000);setNuTassR(sr.tass??8000);setNuSonoR(sr.sonobuoy??5000);setNuRcwsR(sr.rcws??2000);
+  const syncDef=useCallback((pk: string)=>{const r=PLAT_REG.find(x=>x.key===pk);const w=defWS(pk);setNuS(w.consumable.sonobuoy??0);setNuB(w.consumable.blueshark??0);setNuR(w.consumable.rcws??0);setNuD(w.consumable.drone??0);setNuT(w.persistent.tass??0);setNuE(w.persistent["eo/ir"]??0);setNuRA(w.consumable.rcws_ammo||0);
+    const sr=r?.sr;setNuRadar(sr?.radar??15000);setNuTassR(sr?.tass??8000);setNuSonoR(sr?.sonobuoy??5000);setNuRcwsR(sr?.rcws??2000);
     setNuLen(r?.len||10);
     setNuTR(r?.tr||Math.max(1.5,Math.min(30,300/(r?.len||10))));
   },[]);
-  const nxId=useCallback((pt,side)=>{
+  const nxId=useCallback((pt: string, side: UnitSide): number=>{
     if(side==="enemy"){
       const used=units.filter(u=>u.side==="enemy").map(u=>u.platformId);
       let id=9001;while(used.includes(id))id++;return id;
@@ -91,30 +89,32 @@ export default function App(){
     const used=units.map(u=>u.platformId);
     let id=base;while(used.includes(id))id++;return id;
   },[units]);
-  const[nuPID,setNuPID]=useState(0); // 수동 ID (0=자동)
+  const[nuPID,setNuPID]=useState(0);
 
   const addUnit=()=>{if(!nuN.trim())return;const s=nuSide,pt=s==="friendly"?nuPT:nuET;
     const rg=s==="friendly"?PLAT_REG.find(r=>r.key===pt):ENEMY_TYPES.find(r=>r.key===pt);
-    const ws=s==="friendly"?{consumable:{sonobuoy:nuS,blueshark:nuB,rcws:nuR,drone:nuD,rcws_ammo:nuRA},persistent:{tass:nuT,"eo/ir":nuE}}:{consumable:{},persistent:{}};
+    const ws=s==="friendly"?{consumable:{sonobuoy:nuS,blueshark:nuB,rcws:nuR,drone:nuD,rcws_ammo:nuRA},persistent:{tass:nuT,"eo/ir":nuE}}:{consumable:{sonobuoy:0,blueshark:0,rcws:0,drone:0},persistent:{tass:0,"eo/ir":0}};
     const sr=s==="friendly"?{radar:nuRadar,tass:nuTassR,sonobuoy:nuSonoR,rcws:nuRcwsR}:{radar:0,tass:0,sonobuoy:0,rcws:0};
     const pid=nuPID>0?nuPID:nxId(pt,s);
+    const cat: PlatformCategory=(rg?.cat as PlatformCategory)||"USV";
+    const spdU: SpeedUnit=(rg?.unit as SpeedUnit)||"knots";
     if(editUnitIdx>=0){
-      setUnits(p=>{const c=[...p];c[editUnitIdx]={...c[editUnitIdx],name:nuN.trim(),side:s,type:rg?.cat||"USV",platformType:pt,platformId:nuPID>0?nuPID:c[editUnitIdx].platformId,platformLen:nuLen,turnRate:nuTR,speedUnit:rg?.unit||"knots",weaponStatus:ws,sensorRanges:sr};return c;});
+      setUnits(p=>{const c=[...p];const cur=c[editUnitIdx]!;c[editUnitIdx]={...cur,name:nuN.trim(),side:s,type:cat,platformType:pt,platformId:nuPID>0?nuPID:cur.platformId,platformLen:nuLen,turnRate:nuTR,speedUnit:spdU,weaponStatus:ws,sensorRanges:sr};return c;});
     } else {
-      setUnits(p=>[...p,{name:nuN.trim(),side:s,type:rg?.cat||"USV",platformType:pt,platformId:pid,platformLen:nuLen,turnRate:nuTR,speedUnit:rg?.unit||"knots",weaponStatus:ws,sensorRanges:sr,wps:[]}]);
+      setUnits(p=>[...p,{name:nuN.trim(),side:s,type:cat,platformType:pt,platformId:pid,platformLen:nuLen,turnRate:nuTR,speedUnit:spdU,weaponStatus:ws,sensorRanges:sr,wps:[]}]);
       setSel(units.length);
     }
     setShowAU(false);setNuN("");setEditUnitIdx(-1);setNuPID(0);};
 
   const openAU=()=>{setEditUnitIdx(-1);setNuN("");setNuSide("friendly");setNuPT("유인구축함");syncDef("유인구축함");setNuPID(0);setShowAU(true);};
 
-  const openEditUnit=(i)=>{
+  const openEditUnit=(i: number)=>{
     const u=units[i];if(!u)return;
     setEditUnitIdx(i);setNuN(u.name);setNuSide(u.side);
     if(u.side==="friendly"){setNuPT(u.platformType);
-      const ws=u.weaponStatus||{};const c=ws.consumable||{};const p=ws.persistent||{};
+      const ws=u.weaponStatus;const c=ws?.consumable||{};const p=ws?.persistent||{};
       setNuS(c.sonobuoy||0);setNuB(c.blueshark||0);setNuR(c.rcws||0);setNuD(c.drone||0);setNuT(p.tass||0);setNuE(p["eo/ir"]||0);setNuRA(c.rcws_ammo||0);
-      const sr=u.sensorRanges||{};setNuRadar(sr.radar??15000);setNuTassR(sr.tass??8000);setNuSonoR(sr.sonobuoy??5000);setNuRcwsR(sr.rcws??2000);
+      const sr=u.sensorRanges;setNuRadar(sr?.radar??15000);setNuTassR(sr?.tass??8000);setNuSonoR(sr?.sonobuoy??5000);setNuRcwsR(sr?.rcws??2000);
     } else {setNuET(u.platformType);}
     setNuPID(u.platformId||0);
     const rg2=u.side==="friendly"?PLAT_REG.find(r=>r.key===u.platformType):ENEMY_TYPES.find(r=>r.key===u.platformType);
@@ -132,19 +132,17 @@ export default function App(){
     let usePts=wPts;
     if(wTy==="8자기동"||wTy==="타원기동"){
       const gen=wTy==="8자기동"?genFig8:genEllipse;
-      // Step A: 기본 곡선 생성 (tPhase=0, 호장 균등 N+1 점)
       usePts=gen(f8OLat,f8OLon,f8DLat,f8DLon,f8Range,f8Spd,f8SpdU,maxPlatLen,0);
       if(usePts.length===0)return;
-      // Step B: 리더 유닛의 현재 위치(마지막 기존 WP의 마지막 경유점) 찾기
       const leaderU=units[idx];
       const lastExistingWp=leaderU?.wps?.length?leaderU.wps[leaderU.wps.length-1]:null;
       const lastPt=lastExistingWp?.waypoints?.length?lastExistingWp.waypoints[lastExistingWp.waypoints.length-1]:null;
       if(lastPt){
-        // Step C: usePts(호장 균등)에서 lastPt에 가장 가까운 인덱스 탐색
         const Nseg=usePts.length-1;
         let bestIdx=0,bestD=Infinity;
         for(let i=0;i<Nseg;i++){
-          const d=hav(lastPt.lat,lastPt.lon,usePts[i].lat,usePts[i].lon);
+          const cp=usePts[i]!;
+          const d=hav(lastPt.lat,lastPt.lon,cp.lat,cp.lon);
           if(d<bestD){bestD=d;bestIdx=i;}
         }
         // Step D: 배열 순환 shift 로 회전 (parametric regen 금지)
@@ -156,22 +154,21 @@ export default function App(){
         //   해결: 이미 호장 균등한 usePts 를 bestIdx 만큼 배열 순환 shift.
         //         pts[0] 이 정확히 lastPt 근접 호장점 → approach ≤ segLen/2 보장.
         if(bestIdx!==0){
-          const rot=[];
+          const rot: Waypoint[]=[];
           for(let i=0;i<Nseg;i++){
-            rot.push({...usePts[(i+bestIdx)%Nseg]});
+            rot.push({...usePts[(i+bestIdx)%Nseg]!});
           }
-          rot.push({...rot[0]});
+          rot.push({...rot[0]!});
           usePts=rot;
         }
       }
     }
-    // 충돌공격: 표적이 선택되어야 함
     if(wTy==="충돌공격"){
       if(!wCollTgt){alert("충돌 공격 표적을 선택하세요.");return;}
       const en=units.find(u=>u.platformId===wCollTgt.id);
       const eLat=en?.wps?.[0]?.waypoints?.[0]?.lat||35.1;
       const eLon=en?.wps?.[0]?.waypoints?.[0]?.lon||129.0;
-      const su=units[idx]?.speedUnit||"knots";
+      const su: SpeedUnit=units[idx]?.speedUnit||"knots";
       usePts=[{lat:eLat,lon:eLon,alt:0,speed:su==="m/s"?30:20,speedUnit:su,_trackId:wCollTgt.id,_targetName:wCollTgt.name}];
     }
     if(usePts.length===0)return;
@@ -186,20 +183,19 @@ export default function App(){
         const beforePts=[...usePts];
         usePts=insertTurnArc(beforePts,uTR,firstSpd,uRef.platformLen||10);
         if(usePts.length>beforePts.length){
-          let dO=0;for(let i=1;i<beforePts.length;i++)dO+=hav(beforePts[i-1].lat,beforePts[i-1].lon,beforePts[i].lat,beforePts[i].lon);
-          let dN=0;for(let i=1;i<usePts.length;i++)dN+=hav(usePts[i-1].lat,usePts[i-1].lon,usePts[i].lat,usePts[i].lon);
+          let dO=0;for(let i=1;i<beforePts.length;i++)dO+=hav(beforePts[i-1]!.lat,beforePts[i-1]!.lon,beforePts[i]!.lat,beforePts[i]!.lon);
+          let dN=0;for(let i=1;i<usePts.length;i++)dN+=hav(usePts[i-1]!.lat,usePts[i-1]!.lon,usePts[i]!.lat,usePts[i]!.lon);
           if(dO>0.1&&dN>dO)wpDurSec=Math.round(wpDurSec*(dN/dO));
         }
       }
     }
-    // 소노부이투하 WP: 각 경유점에 소노부이 투하 액션 자동 생성
-    let finalActs=[...wActs];
+    const finalActs: ActionConfig[]=[...wActs];
     if(wTy==="소노부이투하"){
       usePts.forEach((pt,pi)=>{
         finalActs.push({
-          category:"weapon",weaponKey:"sonobuoy",weaponType:0,
+          category:"weapon",weaponKey:"sonobuoy",weaponType:0,type:0,
           label:`소노부이 #${pi+1}`,icon:"🔵",color:"#06b6d4",
-          params:{target_lat:pt.lat,target_lon:pt.lon,operating_depth:wSbDepth,active_duration:wSbDur}
+          params:{target_lat:pt.lat,target_lon:pt.lon,operating_depth:wSbDepth,active_duration:wSbDur},
         });
       });
     }
@@ -210,12 +206,9 @@ export default function App(){
     const totalM=allMembers.length;
 
     if(editWP){
-      // ── WP 편집 모드: 기존 WP 업데이트 ──
-      // 기존 WP 의 formation 필드는 그대로 보존(편집 UI 로 드롭하지 않음).
-      // 이전엔 formation 필드를 누락해 편집 시 formation 정보가 실종 →
-      // 동일 사용자의 다음 individual WP 에서 stale barrier/leader 게이트가 잔류.
-      const existingWp=units[editWP.ui]?.wps?.[editWP.wi];
-      const wpObj={name:wN||"WP",start:wSM*60+wSS,duration:wpDurSec,type:wTy,
+      const editRef=editWP;
+      const existingWp=units[editRef.ui]?.wps?.[editRef.wi];
+      const wpObj: WaypointGroup={name:wN||"WP",start:wSM*60+wSS,duration:wpDurSec,type:wTy,
         concurrent:wConc,waypoints:usePts.map(p=>({...p,speed:+p.speed})),actions:finalActs,
         formation:existingWp?.formation||null,
         ...(wMaxSpd>0?{maxSpeed:+wMaxSpd,maxSpeedUnit:wMaxSpdU}:{}),
@@ -223,8 +216,8 @@ export default function App(){
         ...(wTy==="8자기동"?{fig8Config:{oLat:f8OLat,oLon:f8OLon,dLat:f8DLat,dLon:f8DLon,range:f8Range},fig8Loop:true}:{}),
         ...(wTy==="타원기동"?{ellipseConfig:{oLat:f8OLat,oLon:f8OLon,dLat:f8DLat,dLon:f8DLon,range:f8Range},fig8Loop:true}:{}),
         ...(wTy==="충돌공격"&&wCollTgt?{collisionTarget:{id:wCollTgt.id,name:wCollTgt.name}}:{})};
-      setUnits(prev=>{const c=[...prev];const wps=[...c[editWP.ui].wps];wps[editWP.wi]=wpObj;
-        c[editWP.ui]={...c[editWP.ui],wps:wps.sort((a,b)=>a.start-b.start)};return c;});
+      setUnits(prev=>{const c=[...prev];const cu=c[editRef.ui]!;const wps=[...cu.wps];wps[editRef.wi]=wpObj;
+        c[editRef.ui]={...cu,wps:wps.sort((a,b)=>a.start-b.start)};return c;});
     } else {
       // ── 신규 WP 추가 (편대 포함) — Column(단종진) 교리 ──
       // 모든 편대 WP(8자/타원/편대이동)에서 팔로워들은 리더 뒤 일렬로 간격 유지.
@@ -241,44 +234,40 @@ export default function App(){
       const leaderCurveLen=isPatrol?pathArcLen(usePts):0;
       const Nseg=Math.max(1,usePts.length-1);
       const segLen=isPatrol&&leaderCurveLen>0?leaderCurveLen/Nseg:0;
-      const allMemberPts=allMembers.map((unitIdx,mi)=>{
+      const allMemberPts: Waypoint[][]=allMembers.map((_unitIdx,mi)=>{
         if(mi===0||!hasFormation||totalM<=1)return[...usePts.map(p=>({...p}))];
         if(isPatrol){
           if(segLen<=0)return[...usePts.map(p=>({...p}))];
           const kf=(mi*wFormSpacing)/segLen;
           const k0=Math.floor(kf);
           const frac=kf-k0;
-          const shifted=[];
+          const shifted: Waypoint[]=[];
           for(let i=0;i<Nseg;i++){
             const a=((i-k0)%Nseg+Nseg)%Nseg;
             const b=((i-k0-1)%Nseg+Nseg)%Nseg;
-            const pa=usePts[a],pb=usePts[b];
+            const pa=usePts[a]!,pb=usePts[b]!;
             const lat=pa.lat+(pb.lat-pa.lat)*frac;
             const lon=pa.lon+(pb.lon-pa.lon)*frac;
             shifted.push({...pa,lat:Math.round(lat*1e6)/1e6,lon:Math.round(lon*1e6)/1e6});
           }
-          shifted.push({...shifted[0]});
+          shifted.push({...shifted[0]!});
           return shifted;
         }
-        // 편대이동: 리더 경로와 동일 (rendezvous 는 아래에서 prepend)
         return [...usePts.map(p=>({...p}))];
       });
 
-      // Step 1b: 편대이동 column 의 rendezvous prepend
-      //   - 리더: wPts[0] 을 prepend (0-길이 더미, 길이 맞춤)
-      //   - 팔로워 m: rendezvous_m = wPts[0] 에서 첫 구간 방향의 반대로 m*spacing 이동
-      //   - 결과: 모든 멤버 길이 = N+1, sub-WP 0 은 formBarrier 집결점
       if(hasFormation&&totalM>1&&wTy==="편대이동"&&usePts.length>=2){
-        const dir0=brg(usePts[0].lat,usePts[0].lon,usePts[1].lat,usePts[1].lon);
+        const p0=usePts[0]!,p1=usePts[1]!;
+        const dir0=brg(p0.lat,p0.lon,p1.lat,p1.lon);
         const backDir=(dir0+180)%360;
         for(let m=0;m<totalM;m++){
-          let rLat,rLon;
-          if(m===0){rLat=usePts[0].lat;rLon=usePts[0].lon;}
+          let rLat: number,rLon: number;
+          if(m===0){rLat=p0.lat;rLon=p0.lon;}
           else{
-            const [la,lo]=mvPt(usePts[0].lat,usePts[0].lon,backDir,m*wFormSpacing);
+            const [la,lo]=mvPt(p0.lat,p0.lon,backDir,m*wFormSpacing);
             rLat=Math.round(la*1e6)/1e6;rLon=Math.round(lo*1e6)/1e6;
           }
-          allMemberPts[m].unshift({...usePts[0],lat:rLat,lon:rLon});
+          allMemberPts[m]!.unshift({...p0,lat:rLat,lon:rLon});
         }
       }
 
@@ -293,11 +282,12 @@ export default function App(){
       //   - 총 경로 길이는 동일: rendezvous 구간 +m*spacing, 마지막 구간 -m*spacing → 상쇄.
       if(hasFormation&&totalM>1&&wTy==="편대이동"&&usePts.length>=2){
         const lastIdx=usePts.length-1;
-        const dirN=brg(usePts[lastIdx-1].lat,usePts[lastIdx-1].lon,usePts[lastIdx].lat,usePts[lastIdx].lon);
+        const pA=usePts[lastIdx-1]!,pB=usePts[lastIdx]!;
+        const dirN=brg(pA.lat,pA.lon,pB.lat,pB.lon);
         const backDirN=(dirN+180)%360;
         for(let m=1;m<totalM;m++){
-          const memberPts=allMemberPts[m];
-          const lastPt=memberPts[memberPts.length-1];
+          const memberPts=allMemberPts[m]!;
+          const lastPt=memberPts[memberPts.length-1]!;
           const [la,lo]=mvPt(lastPt.lat,lastPt.lon,backDirN,m*wFormSpacing);
           memberPts[memberPts.length-1]={
             ...lastPt,
@@ -344,46 +334,42 @@ export default function App(){
       //   - barrier 없으면 리더가 먼저 진행하여 column 위상이 영구 이탈
       if(hasFormation&&totalM>1){
         for(let m=0;m<totalM;m++){
-          syncedPts[m][0]={...syncedPts[m][0],_formBarrier:true,_formTotal:totalM};
+          syncedPts[m]![0]={...syncedPts[m]![0]!,_formBarrier:true,_formTotal:totalM};
         }
       }
-      // Step 3: WP 생성
       setUnits(prev=>{
         const c=[...prev];
         allMembers.forEach((unitIdx,mi)=>{
-          // 패턴: along-track 스페이싱(mi × spacing, 음수=뒤), 편대이동: 수직 오프셋
           const off=hasFormation&&totalM>1
             ?(isPatrol?-mi*wFormSpacing:formOff(mi,totalM,wFormSpacing))
             :0;
-          const leaderPlatformId=c[allMembers[0]]?.platformId;
-          // Station-keeping: 직전 편대원(immediate predecessor)의 platformId
-          //   리더(mi=0) → 없음; 팔로워 mi → allMembers[mi-1]
-          //   런타임 P 제어가 이 유닛과의 거리를 wFormSpacing 으로 유지하도록 속도 조절
-          const predecessorPlatformId=mi>0?c[allMembers[mi-1]]?.platformId:null;
-          const wpObj={name:totalM>1?`${wN||"WP"}-F${mi+1}`:wN||"WP",
+          const leaderPlatformId=c[allMembers[0]!]?.platformId;
+          const predecessorPlatformId=mi>0?c[allMembers[mi-1]!]?.platformId:null;
+          const wpObj: WaypointGroup={name:totalM>1?`${wN||"WP"}-F${mi+1}`:wN||"WP",
             start:wSM*60+wSS,duration:wpDurSec,type:wTy,
             concurrent:wConc,
-            waypoints:syncedPts[mi].map(p=>({...p,speed:+p.speed})),
+            waypoints:syncedPts[mi]!.map(p=>({...p,speed:+p.speed})),
             actions:mi===0?finalActs:[],
-            formation:hasFormation?{role:mi===0?"leader":"member",leaderId:leaderPlatformId,predecessorId:predecessorPlatformId,spacing:wFormSpacing,total:totalM,offset:Math.round(off)}:null,
+            formation:hasFormation?{role:mi===0?"leader":"member",leaderId:leaderPlatformId??null,predecessorId:predecessorPlatformId??null,spacing:wFormSpacing,total:totalM,offset:Math.round(off)}:null,
             ...(wMaxSpd>0?{maxSpeed:+wMaxSpd,maxSpeedUnit:wMaxSpdU}:{}),
             ...(wTy==="소노부이투하"?{sonobuoyConfig:{depth:wSbDepth,duration:wSbDur}}:{}),
             ...(wTy==="8자기동"?{fig8Config:{oLat:f8OLat,oLon:f8OLon,dLat:f8DLat,dLon:f8DLon,range:f8Range},fig8Loop:true}:{}),
             ...(wTy==="타원기동"?{ellipseConfig:{oLat:f8OLat,oLon:f8OLon,dLat:f8DLat,dLon:f8DLon,range:f8Range},fig8Loop:true}:{}),
             ...(wTy==="충돌공격"&&wCollTgt?{collisionTarget:{id:wCollTgt.id,name:wCollTgt.name}}:{})};
-          c[unitIdx]={...c[unitIdx],wps:[...c[unitIdx].wps,wpObj].sort((a,b)=>a.start-b.start)};
+          const cu=c[unitIdx]!;
+          c[unitIdx]={...cu,wps:[...cu.wps,wpObj].sort((a,b)=>a.start-b.start)};
         });
         return c;
       });
     }
     setShowAW(false);setWActs([]);setWFormUnits([]);setEditWP(null);setWCollTgt(null);};
 
-  const openAW=ui=>{const idx=ui>=0?ui:(sel>=0?sel:0);if(!units.length)return;
+  const openAW=(ui: number)=>{const idx=ui>=0?ui:(sel>=0?sel:0);if(!units.length)return;
     setEditWP(null);
-    setWU(idx);const u=units[idx];setWN(`WP-${String(u.wps.length+1).padStart(2,'0')}`);
+    setWU(idx);const u=units[idx]!;setWN(`WP-${String(u.wps.length+1).padStart(2,'0')}`);
     const lw=u.wps[u.wps.length-1];const as=lw?lw.start+lw.duration:0;
     setWSM(Math.floor(as/60));setWSS(as%60);setWDM(10);setWDS(0);
-    const su=u.speedUnit||"knots";const lastPt=lw?.waypoints?.[lw.waypoints.length-1];
+    const su: SpeedUnit=u.speedUnit||"knots";const lastPt=lw?.waypoints?.[lw.waypoints.length-1];
     setWPts([{lat:lastPt?.lat??35.1,lon:lastPt?.lon??129.0,alt:0,speed:su==="m/s"?30:15,speedUnit:su}]);
     setWTy("이동");setWActs([]);setWsbDepth(50);setWsbDur(300);
     setF8OLat(lastPt?.lat??35.1);setF8OLon(lastPt?.lon??129.0);setF8DLat((lastPt?.lat??35.1)+0.05);setF8DLon(lastPt?.lon??129.0);
@@ -392,17 +378,15 @@ export default function App(){
     setWMaxSpd(0);setWMaxSpdU(u.speedUnit||"knots");
     setShowAW(true);};
 
-  const openEditWP=(ui,wi)=>{
+  const openEditWP=(ui: number, wi: number)=>{
     const u=units[ui];if(!u)return;const wp=u.wps[wi];if(!wp)return;
     setEditWP({ui,wi});setWU(ui);setWN(wp.name);
     const startS=wp.start||0;setWSM(Math.floor(startS/60));setWSS(startS%60);
-    const durS=wp.duration||600;setWDM(Math.floor(durS/60));setWDS(durS%60);
+    const durSec=wp.duration||600;setWDM(Math.floor(durSec/60));setWDS(durSec%60);
     setWTy(wp.type||"이동");setWConc(wp.concurrent||false);
     setWPts(wp.waypoints?.length?wp.waypoints.map(p=>({...p})):[{lat:35.1,lon:129.0,alt:0,speed:15,speedUnit:u.speedUnit||"knots"}]);
     setWActs(wp.actions?.map(a=>({...a,params:{...a.params}}))||[]);
-    // Sonobuoy config
     if(wp.sonobuoyConfig){setWsbDepth(wp.sonobuoyConfig.depth||50);setWsbDur(wp.sonobuoyConfig.duration||300);}
-    // Fig8/Ellipse config
     const fc=wp.fig8Config||wp.ellipseConfig;
     if(fc){setF8OLat(fc.oLat||35.1);setF8OLon(fc.oLon||129.0);setF8DLat(fc.dLat||35.15);setF8DLon(fc.dLon||129.0);setF8Range(fc.range||2000);}
     if(wp.waypoints?.[0]){setF8Spd(wp.waypoints[0].speed||15);setF8SpdU(wp.waypoints[0].speedUnit||u.speedUnit||"knots");}
@@ -412,30 +396,28 @@ export default function App(){
     setShowAW(true);
   };
 
-  const delWP=(ui,wi)=>setUnits(p=>{const c=[...p];c[ui]={...c[ui],wps:c[ui].wps.filter((_,i)=>i!==wi)};return c;});
-  const delUnit=i=>setUnits(p=>p.filter((_,j)=>j!==i));
+  const delWP=(ui: number, wi: number)=>setUnits(p=>{const c=[...p];const cu=c[ui]!;c[ui]={...cu,wps:cu.wps.filter((_,i)=>i!==wi)};return c;});
+  const delUnit=(i: number)=>setUnits(p=>p.filter((_,j)=>j!==i));
 
-  // Sim
   const startSim=()=>{const e=eng.current;e.load({scenarioStart:scStart,totalDurationSec:totSec,units});e.speed=sSp;e.running=true;setSRun(true);setSS(e.snap());
-    if(sIv.current)clearInterval(sIv.current);sIv.current=setInterval(()=>{if(!e.running)return;const st=e.tick(0.2);setSS({...st});if(e.simTime>=totSec){e.running=false;setSRun(false);clearInterval(sIv.current);}},200);};
+    if(sIv.current)clearInterval(sIv.current);sIv.current=setInterval(()=>{if(!e.running)return;const st=e.tick(0.2);setSS({...st});if(e.simTime>=totSec){e.running=false;setSRun(false);if(sIv.current)clearInterval(sIv.current);}},200);};
   const stopSim=()=>{eng.current.running=false;setSRun(false);if(sIv.current)clearInterval(sIv.current);};
   const resetSim=()=>{stopSim();eng.current.simTime=0;eng.current.history=[];setSS(null);};
   useEffect(()=>{eng.current.speed=sSp;},[sSp]);
   useEffect(()=>()=>{if(sIv.current)clearInterval(sIv.current);},[]);
 
   const expJSON=()=>{const b=new Blob([JSON.stringify({version:5,scenarioStart:scStart,totalDurationSec:totSec,tickIntervalSec:tick,units},null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="scenario.json";a.click();};
-  const impJSON=()=>{const i=document.createElement("input");i.type="file";i.accept=".json";i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);if(d.scenarioStart)setScStart(d.scenarioStart);const ts=d.totalDurationSec||7200;setDurM(Math.floor(ts/60));setDurS(ts%60);if(d.tickIntervalSec)setTick(d.tickIntervalSec);if(d.units){setUnits(d.units);setSel(0);}}catch{alert("유효하지 않은 JSON");}};r.readAsText(f);};i.click();};
-  const getAW=()=>units[wU]?.weaponStatus||{consumable:{},persistent:{}};
+  const impJSON=()=>{const i=document.createElement("input");i.type="file";i.accept=".json";i.onchange=(e)=>{const t=e.target as HTMLInputElement;const f=t.files?.[0];if(!f)return;const r=new FileReader();r.onload=(ev)=>{try{const d=JSON.parse(String(ev.target?.result??""));if(d.scenarioStart)setScStart(d.scenarioStart);const ts=d.totalDurationSec||7200;setDurM(Math.floor(ts/60));setDurS(ts%60);if(d.tickIntervalSec)setTick(d.tickIntervalSec);if(d.units){setUnits(d.units);setSel(0);}}catch{alert("유효하지 않은 JSON");}};r.readAsText(f);};i.click();};
+  const getAW=()=>units[wU]?.weaponStatus||{consumable:{sonobuoy:0,blueshark:0,rcws:0,drone:0},persistent:{tass:0,"eo/ir":0}};
 
-  // CSS Reset
   useEffect(()=>{const id='__c2r';if(document.getElementById(id))return;const s=document.createElement('style');s.id=id;
     s.textContent=`*,*::before,*::after{box-sizing:border-box!important;margin:0;padding:0}html{height:100%!important;overflow:hidden!important}body{margin:0!important;padding:0!important;height:100%!important;width:100%!important;overflow:hidden!important;background:#0a0e17!important;display:block!important;place-items:unset!important;min-width:0!important;min-height:0!important;font-family:'Noto Sans KR',system-ui,sans-serif!important;color:#e2e8f0!important}#root,#__next,[data-reactroot]{margin:0!important;padding:0!important;max-width:none!important;width:100%!important;height:100%!important;overflow:hidden!important;text-align:left!important}::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#1e2d4a;border-radius:3px}`;
-    document.head.appendChild(s);document.querySelectorAll('link[rel="stylesheet"]').forEach(l=>{if((l.getAttribute('href')||'').includes('index'))l.disabled=true;});},[]);
+    document.head.appendChild(s);document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]').forEach(l=>{if((l.getAttribute('href')||'').includes('index'))l.disabled=true;});},[]);
 
   return(<div style={S.root}>
     <div style={S.hdr}>
       <div style={S.hL}><div style={S.logo}>C2</div><div><div style={{fontSize:13,fontWeight:600}}>C2 Protocol <span style={{color:"#06b6d4"}}>Simulator</span> <span style={{fontSize:9,color:"#4a5e80"}}>v3</span></div><div style={{fontSize:8,color:"#4a5e80",textTransform:"uppercase",letterSpacing:.5}}>Multi-WP · Per-MSG CSV · TASS Tracks</div></div></div>
-      <div style={{display:"flex",gap:4}}>{[["scenario","📊 시나리오"],["cop","🗺️ COP"],["export","📤 CSV"]].map(([k,l])=><button key={k} onClick={()=>setTab(k)} style={{...S.tab,...(tab===k?S.tabA:{})}}>{l}</button>)}</div>
+      <div style={{display:"flex",gap:4}}>{([["scenario","📊 시나리오"],["cop","🗺️ COP"],["export","📤 CSV"]] as const).map(([k,l])=><button key={k} onClick={()=>setTab(k)} style={{...S.tab,...(tab===k?S.tabA:{})}}>{l}</button>)}</div>
     </div>
 
     {tab==="scenario"&&<ScTab {...{units,sel,setSel,scStart,setScStart,durM,setDurM,durS,setDurS,totSec,tick,setTick}} oAU={openAU} oAW={()=>openAW(-1)} eU={openEditUnit} eW={openEditWP} dU={i=>{if(confirm("삭제?"))delUnit(i)}} dW={delWP} eJ={expJSON} iJ={impJSON}/>}
@@ -446,7 +428,7 @@ export default function App(){
     {showAU&&<Mod t={editUnitIdx>=0?`✏️ 유닛 편집 — ${units[editUnitIdx]?.name||""}`:"🔷 유닛 추가"} close={()=>{setShowAU(false);setEditUnitIdx(-1);}} w={nuSide==="friendly"?740:440}>
       <div style={{display:"flex",gap:16}}>
         <div style={{flex:1}}>
-          <F l="진영"><select value={nuSide} onChange={e=>setNuSide(e.target.value)} style={S.inp}><option value="friendly">아군</option><option value="enemy">적군</option></select></F>
+          <F l="진영"><select value={nuSide} onChange={e=>setNuSide(e.target.value as UnitSide)} style={S.inp}><option value="friendly">아군</option><option value="enemy">적군</option></select></F>
           {nuSide==="friendly"?<F l="플랫폼 (§2.1)"><select value={nuPT} onChange={e=>{setNuPT(e.target.value);syncDef(e.target.value);if(editUnitIdx<0)setNuPID(0);}} style={S.inp}>{PLAT_REG.map(r=><option key={r.key} value={r.key}>[{r.cat}] {r.label} — {r.prefix}x · {r.unit} · {r.len}m</option>)}</select></F>
             :<F l="적군 유형"><select value={nuET} onChange={e=>{setNuET(e.target.value);const er=ENEMY_TYPES.find(r=>r.key===e.target.value);setNuLen(er?.len||10);setNuTR(er?.tr||Math.max(1.5,Math.min(30,300/(er?.len||10))));}} style={S.inp}>{ENEMY_TYPES.map(r=><option key={r.key} value={r.key}>{r.label} — {r.unit} ({r.len}m)</option>)}</select></F>}
           <F l="콜사인"><input value={nuN} onChange={e=>setNuN(e.target.value)} placeholder="e.g. ALPHA-1" style={S.inp} onKeyDown={e=>{if(e.key==="Enter")addUnit();}} autoFocus/></F>
@@ -535,14 +517,14 @@ export default function App(){
             <F l="최대 속력 (0=제한 없음)" style={{flex:1.2}}>
               <div style={{display:"flex",gap:3}}>
                 <input type="number" value={wMaxSpd} onChange={e=>setWMaxSpd(Math.max(0,+e.target.value))} min={0} step={0.1} style={{...S.inp,flex:1}}/>
-                <select value={wMaxSpdU} onChange={e=>setWMaxSpdU(e.target.value)} style={{...S.inp,width:60}}>
+                <select value={wMaxSpdU} onChange={e=>setWMaxSpdU(e.target.value as SpeedUnit)} style={{...S.inp,width:60}}>
                   <option value="knots">knots</option>
                   <option value="m/s">m/s</option>
                 </select>
               </div>
             </F>
           </div>
-          <F l="WP 유형"><select value={wTy} onChange={e=>setWTy(e.target.value)} style={{...S.inp,borderColor:wTy==="소노부이투하"?"#06b6d4":wTy==="잠항"?"#6366f1":wTy==="8자기동"?"#ec4899":wTy==="타원기동"?"#f59e0b":wTy==="충돌공격"?"#dc2626":wTy==="편대이동"?"#6366f1":"#1e2d4a"}}>{(units[wU]?.side==="enemy"?WP_TYPES_ENEMY:WP_TYPES).map(t=><option key={t}>{t}</option>)}</select></F>
+          <F l="WP 유형"><select value={wTy} onChange={e=>setWTy(e.target.value as WaypointType)} style={{...S.inp,borderColor:wTy==="소노부이투하"?"#06b6d4":wTy==="잠항"?"#6366f1":wTy==="8자기동"?"#ec4899":wTy==="타원기동"?"#f59e0b":wTy==="충돌공격"?"#dc2626":wTy==="편대이동"?"#6366f1":"#1e2d4a"}}>{(units[wU]?.side==="enemy"?WP_TYPES_ENEMY:WP_TYPES).map(t=><option key={t}>{t}</option>)}</select></F>
 
           {/* ═══ 소노부이투하 WP 설정 ═══ */}
           {!wConc&&wTy==="소노부이투하"&&(
@@ -587,7 +569,7 @@ export default function App(){
               </div>
               <div style={{display:"flex",gap:8}}>
                 <F l="기동 속도" style={{flex:1}}><input type="number" step="0.1" value={f8Spd} onChange={e=>setF8Spd(+e.target.value)} style={S.inp}/></F>
-                <F l="속도 단위" style={{flex:1}}><select value={f8SpdU} onChange={e=>setF8SpdU(e.target.value)} style={S.inp}><option value="knots">knots</option><option value="m/s">m/s</option></select></F>
+                <F l="속도 단위" style={{flex:1}}><select value={f8SpdU} onChange={e=>setF8SpdU(e.target.value as SpeedUnit)} style={S.inp}><option value="knots">knots</option><option value="m/s">m/s</option></select></F>
               </div>
               {/* Preview info + curvature warning */}
               {(()=>{
@@ -649,7 +631,7 @@ export default function App(){
               </div>
               <div style={{display:"flex",gap:8}}>
                 <F l="기동 속도" style={{flex:1}}><input type="number" step="0.1" value={f8Spd} onChange={e=>setF8Spd(+e.target.value)} style={S.inp}/></F>
-                <F l="속도 단위" style={{flex:1}}><select value={f8SpdU} onChange={e=>setF8SpdU(e.target.value)} style={S.inp}><option value="knots">knots</option><option value="m/s">m/s</option></select></F>
+                <F l="속도 단위" style={{flex:1}}><select value={f8SpdU} onChange={e=>setF8SpdU(e.target.value as SpeedUnit)} style={S.inp}><option value="knots">knots</option><option value="m/s">m/s</option></select></F>
               </div>
               {(()=>{
                 const pDist=hav(f8OLat,f8OLon,f8DLat,f8DLon);
@@ -836,12 +818,12 @@ export default function App(){
                   })}
                 </select>
                 <button style={{...S.btnP,fontSize:8,padding:"2px 6px",background:"linear-gradient(135deg,#ef4444,#dc2626)",borderColor:"#ef4444",flexShrink:0}} onClick={()=>{
-                  const sel=document.getElementById("__wpTgtSel");if(!sel?.value)return;
+                  const sel=document.getElementById("__wpTgtSel") as HTMLSelectElement | null;if(!sel?.value)return;
                   try{const d=JSON.parse(sel.value);
                     const lastPt=wPts[wPts.length-1];
                     setWPts(p=>[...p,{lat:d.lat||35.1,lon:d.lon||129.0,alt:0,speed:lastPt?.speed||15,speedUnit:lastPt?.speedUnit||"knots",_targetName:d.name,_trackId:d.id||null}]);
                     sel.value="";
-                  }catch{}
+                  }catch{/* ignore */}
                 }}>추가</button>
               </div>
             )}
@@ -854,17 +836,17 @@ export default function App(){
             )}
             <div style={{maxHeight:200,overflowY:"auto"}}>
               {wPts.map((pt,pi)=>{
-                const showAlt=wTy==="잠항"||units[wU]?.platformType==="적잠수함"||units[wU]?.cat==="UAV"||units[wU]?.platformType==="자폭드론";
+                const showAlt=wTy==="잠항"||units[wU]?.platformType==="적잠수함"||units[wU]?.type==="UAV"||units[wU]?.platformType==="자폭드론";
                 const isEnemy=units[wU]?.side==="enemy";
                 return(
                 <div key={pi} style={{display:"flex",gap:4,alignItems:"center",marginBottom:4,padding:4,background:pt._targetName?"rgba(239,68,68,0.04)":wTy==="소노부이투하"?"rgba(6,182,212,0.04)":isEnemy?"rgba(239,68,68,0.02)":"rgba(255,255,255,0.02)",borderRadius:4,border:pt._targetName?"1px solid rgba(239,68,68,0.2)":wTy==="소노부이투하"?"1px solid rgba(6,182,212,0.2)":isEnemy?"1px solid rgba(239,68,68,0.1)":"1px solid #1e2d4a"}}>
                   <span style={{fontSize:9,color:pt._targetName?"#ef4444":wTy==="소노부이투하"?"#06b6d4":isEnemy?"#ef4444":"#06b6d4",fontWeight:700,width:18,textAlign:"center",flexShrink:0}}>{pt._targetName?"🎯":wTy==="소노부이투하"?"🔵":`#${pi+1}`}</span>
                   <div style={{display:"grid",gridTemplateColumns:showAlt?"1fr 1fr .7fr .7fr .5fr":"1fr 1fr .8fr .5fr",gap:3,flex:1}}>
-                    <input type="number" step="0.0001" value={pt.lat} placeholder="위도" onChange={e=>{const v=[...wPts];v[pi]={...v[pi],lat:+e.target.value};setWPts(v);}} style={{...S.inp,fontSize:9,padding:"2px 4px"}} title="위도"/>
-                    <input type="number" step="0.0001" value={pt.lon} placeholder="경도" onChange={e=>{const v=[...wPts];v[pi]={...v[pi],lon:+e.target.value};setWPts(v);}} style={{...S.inp,fontSize:9,padding:"2px 4px"}} title="경도"/>
-                    {showAlt&&<input type="number" step="1" value={pt.alt||0} placeholder="고도/수심" onChange={e=>{const v=[...wPts];v[pi]={...v[pi],alt:+e.target.value};setWPts(v);}} style={{...S.inp,fontSize:9,padding:"2px 4px",borderColor:pt.alt<0?"#6366f1":"#1e2d4a"}} title="고도(m)/수심(음수)"/>}
-                    <input type="number" step="0.1" value={pt.speed} placeholder="속도" onChange={e=>{const v=[...wPts];v[pi]={...v[pi],speed:+e.target.value};setWPts(v);}} style={{...S.inp,fontSize:9,padding:"2px 4px"}} title="속도"/>
-                    <select value={pt.speedUnit} onChange={e=>{const v=[...wPts];v[pi]={...v[pi],speedUnit:e.target.value};setWPts(v);}} style={{...S.inp,fontSize:9,padding:"2px 4px"}}>
+                    <input type="number" step="0.0001" value={pt.lat} placeholder="위도" onChange={e=>{const v=[...wPts];v[pi]={...v[pi]!,lat:+e.target.value};setWPts(v);}} style={{...S.inp,fontSize:9,padding:"2px 4px"}} title="위도"/>
+                    <input type="number" step="0.0001" value={pt.lon} placeholder="경도" onChange={e=>{const v=[...wPts];v[pi]={...v[pi]!,lon:+e.target.value};setWPts(v);}} style={{...S.inp,fontSize:9,padding:"2px 4px"}} title="경도"/>
+                    {showAlt&&<input type="number" step="1" value={pt.alt||0} placeholder="고도/수심" onChange={e=>{const v=[...wPts];v[pi]={...v[pi]!,alt:+e.target.value};setWPts(v);}} style={{...S.inp,fontSize:9,padding:"2px 4px",borderColor:(pt.alt??0)<0?"#6366f1":"#1e2d4a"}} title="고도(m)/수심(음수)"/>}
+                    <input type="number" step="0.1" value={pt.speed} placeholder="속도" onChange={e=>{const v=[...wPts];v[pi]={...v[pi]!,speed:+e.target.value};setWPts(v);}} style={{...S.inp,fontSize:9,padding:"2px 4px"}} title="속도"/>
+                    <select value={pt.speedUnit} onChange={e=>{const v=[...wPts];v[pi]={...v[pi]!,speedUnit:e.target.value as SpeedUnit};setWPts(v);}} style={{...S.inp,fontSize:9,padding:"2px 4px"}}>
                       <option value="knots">kt</option><option value="m/s">m/s</option>
                     </select>
                   </div>
@@ -921,12 +903,12 @@ export default function App(){
               <button onClick={()=>setWActs(p=>p.filter((_,j)=>j!==i))} style={{background:"none",border:"none",color:"#ef4444",cursor:"pointer",fontSize:10}}>✕</button>
             </div>))}</div>}
           <div style={{fontSize:9,color:"#8899b4",fontWeight:600,marginBottom:4}}>무장 (0xFF37)</div>
-          {WPN_ACTS.map(wa=>{const av=(getAW()?.consumable?.[wa.key]||0)-wActs.filter(a=>a.weaponKey===wa.key).length;
-            return <AB key={wa.key} act={wa} rem={av} onAdd={p=>setWActs(prev=>[...prev,{category:"weapon",weaponKey:wa.key,weaponType:wa.type,...wa,params:p}])} dLat={wPts[wPts.length-1]?.lat||35.1} dLon={wPts[wPts.length-1]?.lon||129.0} enemies={units.filter(u=>u.side==="enemy")}/>;
+          {WPN_ACTS.map(wa=>{const av=(getAW()?.consumable?.[wa.key]||0)-wActs.filter(a=>a.category==="weapon"&&a.weaponKey===wa.key).length;
+            return <AB key={wa.key} act={wa} rem={av} onAdd={p=>setWActs(prev=>[...prev,{category:"weapon",weaponKey:wa.key,weaponType:wa.type,label:wa.label,icon:wa.icon,color:wa.color,fields:wa.fields,type:wa.type,params:p}])} dLat={wPts[wPts.length-1]?.lat||35.1} dLon={wPts[wPts.length-1]?.lon||129.0} enemies={units.filter(u=>u.side==="enemy")}/>;
           })}
           <div style={{fontSize:9,color:"#8899b4",fontWeight:600,marginBottom:4,marginTop:8}}>센서 (0xFF39)</div>
           {SEN_ACTS.map(sa=>{const av=getAW()?.persistent?.[sa.key==="eoir"?"eo/ir":"tass"]||0;
-            return <AB key={sa.key} act={sa} rem={av} isSensor onAdd={p=>setWActs(prev=>[...prev,{category:"sensor",sensorKey:sa.key,sensorType:sa.type,...sa,params:p}])} dLat={wPts[wPts.length-1]?.lat||35.1} dLon={wPts[wPts.length-1]?.lon||129.0} enemies={units.filter(u=>u.side==="enemy")}/>;
+            return <AB key={sa.key} act={sa} rem={av} isSensor onAdd={p=>setWActs(prev=>[...prev,{category:"sensor",sensorKey:sa.key,sensorType:sa.type,label:sa.label,icon:sa.icon,color:sa.color,fields:sa.fields,type:sa.type,params:p}])} dLat={wPts[wPts.length-1]?.lat||35.1} dLon={wPts[wPts.length-1]?.lon||129.0} enemies={units.filter(u=>u.side==="enemy")}/>;
           })}
         </div>}
       </div>
